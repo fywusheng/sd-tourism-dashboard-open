@@ -55,8 +55,17 @@ export const getMapOption = () => {
         normal: {
           areaColor: colorList[i - 1],
           borderWidth: 0
+        },
+        emphasis: {
+          areaColor: colorList[i - 1],
+          borderWidth: 0
         }
-      }
+      },
+      label: {
+          show: false,
+          color: '#fff',
+          fontSize: 14
+        }
     }
     if (i === colorList.length) {
       mapOption.itemStyle.normal.shadowColor = 'rgba(0, 0, 0, 0.71)'
@@ -261,13 +270,18 @@ export const getMapOption = () => {
 ];
   const option = {
     legend: {
-      show: false,
+      show: true,
       orient: "vertical",
-      x: "left",
-      data: ["强", "中", "弱"],
+      left: "30%",
+      bottom: "37%",
+      data: ["弱", "中", "强"],
       textStyle: {
         color: "#fff",
+        fontSize: 14
       },
+      itemWidth: 20,
+      itemHeight: 14,
+      itemGap: 15
     },
     geo: [
       // 最外围发光边界
@@ -287,7 +301,16 @@ export const getMapOption = () => {
             borderWidth: 8,
             // shadowColor: 'rgba(218, 163, 88, 0.4)',
             // shadowBlur: 20
+          },
+          emphasis: {
+            borderColor: '#5dffee',
+            borderWidth: 8
           }
+        },
+        label: {
+          show: false,
+          color: '#fff',
+          fontSize: 14
         }
       },
       // 最外层遮罩蒙版
@@ -297,6 +320,9 @@ export const getMapOption = () => {
         layoutCenter: ['50%', '50%'], //地图位置
         layoutSize: '100%',
         z: 14,
+        emphasis: {
+          disabled: true
+        },
         itemStyle: {
           normal: {
             // areaColor: 'rgba(106, 125, 171, 0.45)',
@@ -306,6 +332,12 @@ export const getMapOption = () => {
               image: mapBg
             },
             // areaColor: '#0141a0',
+            borderColor: '#5dffee',
+          },
+          emphasis: {
+            areaColor: {
+              image: mapBg
+            },
             borderColor: '#5dffee',
           }
         },
@@ -333,7 +365,19 @@ export const getMapOption = () => {
             // areaColor: '#0141a0',
             borderColor: '#5dffee',
             borderWidth: 1
+          },
+          emphasis: {
+            areaColor: {
+              image: mapBg
+            },
+            borderColor: '#5dffee',
+            borderWidth: 1
           }
+        },
+        label: {
+          show: false,
+          color: '#fff',
+          fontSize: 14
         }
       },
       ...geoList
@@ -358,7 +402,7 @@ export const getMapOption = () => {
         },
         data: (() => {
           const data = [];
-          const len = 500;
+          const len = 50;
           let geoCoord;
           for (let i = 0; i < len; i++) {
             geoCoord = placeList[i % placeList.length].geoCoord;
@@ -395,7 +439,7 @@ export const getMapOption = () => {
         },
         data: (() => {
           const data = [];
-          const len = 1000;
+          const len = 10;
           let geoCoord;
           for (let i = 0; i < len; i++) {
             geoCoord = placeList[i % placeList.length].geoCoord;

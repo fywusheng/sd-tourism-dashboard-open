@@ -10,6 +10,12 @@
     <RightPanel />
     <!-- 底部组件 -->
     <CFooter />
+    <!-- 中间内容区域 -->
+    <MiddleCont />
+    <MiddleCardLeftTop />
+    <MiddleCardLeftBottom />
+    <MiddleCardRightTop />
+    <MiddleCardRightBottom />
   </main>
 </template>
 
@@ -19,6 +25,11 @@ import CMap from '@/components/CMap.vue'
 import LeftPanel from '@/components/leftPanel.vue'
 import RightPanel from '@/components/rightPanel.vue'
 import CFooter from '@/components/CFooter.vue'
+import MiddleCont from '@/components/MiddleCont.vue'
+import MiddleCardLeftTop from '@/components/MiddleCardLeftTop.vue'
+import MiddleCardLeftBottom from '@/components/MiddleCardLeftBottom.vue'
+import MiddleCardRightTop from '@/components/MiddleCardRightTop.vue'
+import MiddleCardRightBottom from '@/components/MiddleCardRightBottom.vue'
 import { onMounted } from 'vue'
 import autofit from 'autofit.js'
 
