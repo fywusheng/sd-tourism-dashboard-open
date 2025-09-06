@@ -1,11 +1,16 @@
 <!-- 右侧数据面板 -->
 <template>
   <div class="right-panel">
-    <!-- 各行业收入 -->
+    <!-- 左上角标题 -->
+    <div class="title">
+      <img src="@/assets/img/green.png" />
+      <img src="@/assets/img/ride.png" />
+    </div>
+    <!-- 运行时长 -->
     <industryRevenue />
-    <!-- 接待游客人数TOP5 -->
+    <!-- 车辆使用时长  省排行榜 -->
     <top5Tourists />
-    <!-- 山东省实时热词 -->
+    <!-- 今日低碳出行TOP20 -->
     <realTimeHotWords />
   </div>
 </template>
@@ -19,15 +24,27 @@ import realTimeHotWords from './rightPanel/realTimeHotWords.vue'
 <style lang="scss" scoped>
 .right-panel {
   position: absolute;
-  width: 500px;
+  width: 430px;
   height: 100%;
   right: 0;
   top: 0;
-  display: grid;
-  gap: 24px;
-  padding: 111px 0 24px 0;
+  // display: grid;
+  // gap: 24px;
+  padding: 46px 0 24px 0;
   box-sizing: border-box;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(3, 1fr);
+  // grid-template-columns: 1fr;
+  // grid-template-rows: repeat(3, 1fr);
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 400px;
+    height: 40px;
+    margin-bottom: 10px;
+    img {
+      height: 40px;
+      width: auto;
+    }
+  }
 }
 </style>

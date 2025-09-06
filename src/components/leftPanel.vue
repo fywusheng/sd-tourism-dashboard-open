@@ -1,11 +1,16 @@
 <!-- 左侧数据面板 -->
 <template>
   <div class="left-panel">
-    <!-- 景点人流排名 -->
+    <!-- 左上角标题 -->
+    <div class="title">
+      <img src="@/assets/img/fly.png" />
+      <img src="@/assets/img/saving.png" />
+    </div>
+    <!-- 品牌电动车京东销量TOP10 -->
     <rankingOfScenicSpots />
-    <!-- 游客年龄分布 -->
+    <!-- 用户评价 -->
     <ageDistribution />
-    <!-- 年度接待游客比 -->
+    <!-- 本月各省销售概况 -->
     <receptionOfTourists />
   </div>
 </template>
@@ -19,15 +24,27 @@ import receptionOfTourists from './leftPanel/receptionOfTourists.vue'
 <style lang="scss" scoped>
 .left-panel {
   position: absolute;
-  width: 500px;
+  width: 430px;
   height: 100%;
   left: 0;
   top: 0;
-  display: grid;
-  gap: 24px;
-  padding: 111px 0 34px 16px;
+  // display: grid;
+  // gap: 10px;
+  padding: 46px 0 34px 16px;
   box-sizing: border-box;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(3, 1fr);
+  // grid-template-columns: 1fr;
+  // grid-template-rows: repeat(3, 1fr);
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 400px;
+    height: 40px;
+    margin-bottom: 10px;
+    img {
+      height: 40px;
+      width: auto;
+    }
+  }
 }
 </style>

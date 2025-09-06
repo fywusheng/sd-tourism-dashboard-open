@@ -25,8 +25,8 @@ import autofit from 'autofit.js'
 onMounted(() => {
   autofit.init({
     el: 'body',
-    dh: 1080,
-    dw: 1920,
+    dh: 768, // 设计稿高度
+    dw: 1920, // 设计稿宽度
     resize: true
   })
 })
@@ -37,7 +37,7 @@ onMounted(() => {
   position: relative;
   width: 100%;
   height: 100%;
-  background: url('@/assets/images/背景.png') no-repeat center center;
+  background: url('@/assets/img/bg.png') no-repeat center center;
   background-size: 100% 100%;
 }
 </style>

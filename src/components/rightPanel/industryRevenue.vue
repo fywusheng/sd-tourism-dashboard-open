@@ -1,224 +1,157 @@
-<!-- 各行业收入 -->
+<!-- 运行时长 -->
 <template>
-  <CPanel>
-    <template #header>各行业收入</template>
+  <CPanel :height="183">
+    <template #header>运行时长</template>
     <template #content>
-      <CEcharts ref="chartRef" :option="option" @onload="startHighlightLoop" />
+      <div class="gauge-container">
+        <div class="gauge-item">
+          <CEcharts ref="chartRef1" :option="gaugeOption1" />
+          <div class="gauge-title">运行时长 (h)</div>
+        </div>
+        <div class="gauge-item">
+          <CEcharts ref="chartRef2" :option="gaugeOption2" />
+          <div class="gauge-title">平均使用时长 (h)</div>
+        </div>
+      </div>
     </template>
   </CPanel>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import * as echarts from 'echarts'
+import { ref, onMounted, computed } from 'vue'
 import CPanel from '@/components/common/CPanel.vue'
 import CEcharts from '@/components/common/CEcharts.vue'
 
-const option = ref<any>({})
-const chartRef = ref()
-let highlightTimer: any = null
-let currentIndex = 0
-const VALUE = [100, 200, 300, 400, 500, 600, 700]
+const chartRef1 = ref()
+const chartRef2 = ref()
 
-const createEchartBar = () => {
-  const xAxisData = ['旅游', '住宿', '餐饮', '购物', '娱乐', '交通', '其他']
-  const seriesData = [
-    {
-      value: 100
-    },
-    {
-      value: 200
-    },
-    {
-      value: 300
-    },
-    {
-      value: 400
-    },
-    {
-      value: 500
-    },
-    {
-      value: 600
-    },
-    {
-      value: 700
-    }
-  ]
-
-  let maxAmount = 0
-  seriesData.map(item => {
-    item.value > maxAmount ? (maxAmount = item.value) : (maxAmount = maxAmount)
-  })
-
+// 创建仪表盘配置
+const createGaugeOption = (value: number, max: number = 100) => {
   return {
-    grid: {
-      left: '0%',
-      right: '0%',
-      top: '20%',
-      bottom: '10%',
-      containLabel: true
-    },
-    xAxis: {
-      type: 'category',
-      data: xAxisData,
-      axisLine: {
-        show: true,
-        lineStyle: {
-          width: 2,
-          color: 'rgba(76, 93, 130, 1)'
-        }
-      },
-      axisTick: {
-        show: false
-      },
-      axisLabel: {
-        fontSize: 12,
-        color: '#C5D6E6',
-        textStyle: {
-          color: '#C5D6E6'
-        }
-      }
-    },
-    yAxis: {
-      type: 'value',
-      axisLine: {
-        show: false
-      },
-      name: '亿',
-      nameTextStyle: {
-        color: 'rgba(201, 211, 234, 1)',
-        fontSize: 14,
-        padding: [0, 32, 12, 0]
-      },
-      splitLine: {
-        show: true,
-        lineStyle: {
-          color: 'rgba(52, 71, 112, 1)',
-          type: 'dashed'
-        }
-      },
-      axisTick: {
-        show: false
-      },
-      axisLabel: {
-        fontSize: 14,
-        color: '#C5D6E6',
-        textStyle: {
-          color: '#C5D6E6',
-          fontSize: 14
-        }
-      }
-    },
     series: [
       {
-        type: 'pictorialBar',
-        name: '渐变背景',
-        barWidth: 14,
-        symbol: 'rect',
-        symbolSize: '100%',
-        symbolPosition: 'start',
-        symbolOffset: [0, 0],
-        label: {
-          normal: {
-            show: true,
-            position: 'top',
-            formatter: (params: any) => {
-              return [...Object.values(seriesData[params.dataIndex])].join('\n')
-            },
-            fontSize: 12,
-            lineHeight: 16,
-            color: '#93B9FF'
-          }
-        },
-        emphasis: {
-          itemStyle: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              {
-                offset: 0,
-                color: 'rgba(218, 163, 88, 1)'
-              },
-              {
-                offset: 1,
-                color: 'rgba(255, 130, 54, 1)'
-              }
-            ])
-          }
-        },
+        type: 'gauge',
+        center: ['50%', '60%'],
+        radius: '70%',
+        startAngle: 200,
+        endAngle: -20,
+        min: 0,
+        max: max,
+        splitNumber: 10,
         itemStyle: {
-          normal: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              {
-                offset: 0,
-                color: 'rgba(197, 213, 249, 1)'
-              },
-              {
-                offset: 1,
-                color: 'rgba(120, 144, 199, 1)'
-              }
-            ])
+          color: '#58D9F9',
+          shadowColor: 'rgba(0,138,255,0.45)',
+          shadowBlur: 10,
+          shadowOffsetX: 2,
+          shadowOffsetY: 2
+        },
+        progress: {
+          show: true,
+          roundCap: true,
+          width: 6
+        },
+        pointer: {
+          icon: 'path://M2090.36389,615.30999 L2090.36389,615.30999 C2091.48372,615.30999 2092.40383,616.194028 2092.44859,617.312956 L2096.90698,728.755929 C2097.05155,732.369577 2094.2393,735.416212 2090.62566,735.56078 C2090.53845,735.564269 2090.45117,735.566014 2090.36389,735.566014 L2090.36389,735.566014 C2086.74736,735.566014 2083.81557,732.63423 2083.81557,729.017692 C2083.81557,728.930412 2083.81732,728.84314 2083.82081,728.755929 L2088.2792,617.312956 C2088.32396,616.194028 2089.24407,615.30999 2090.36389,615.30999 Z',
+          length: '75%',
+          width: 12,
+          offsetCenter: [0, '5%']
+        },
+        axisLine: {
+          roundCap: true,
+          lineStyle: {
+            width: 6,
+            color: [
+              [0.3, '#67e0e3'],
+              [0.7, '#37a2da'],
+              [1, '#fd666d']
+            ]
           }
         },
-        z: 1,
-        zlevel: 0,
-        data: seriesData.map(item => item.value)
-      },
-      {
-        type: 'pictorialBar',
-        name: '块状切片',
-        itemStyle: {
-          normal: {
-            color: '#011140'
+        axisTick: {
+          distance: -25,
+          splitNumber: 5,
+          lineStyle: {
+            width: 2,
+            color: '#67e0e3'
           }
         },
-        barWidth: 14,
-        symbolRepeat: 28,
-        symbol: 'rect',
-        symbolClip: true,
-        symbolSize: [14, 2],
-        symbolPosition: 'start',
-        symbolOffset: [0, 0],
-        data: seriesData.map(item => item.value),
-        z: 2,
-        zlevel: 0
+        splitLine: {
+          distance: -25,
+          length: 10,
+          lineStyle: {
+            width: 2,
+            color: '#67e0e3'
+          }
+        },
+        axisLabel: {
+          distance: -15,
+          color: '#67e0e3',
+          fontSize: 10
+        },
+        anchor: {
+          show: false
+        },
+        title: {
+          show: false
+        },
+        detail: {
+          valueAnimation: true,
+          width: '60%',
+          lineHeight: 30,
+          borderRadius: 8,
+          offsetCenter: [0, '25%'],
+          fontSize: 24,
+          fontWeight: 'bolder',
+          formatter: '{value}',
+          color: '#fff'
+        },
+        data: [
+          {
+            value: value
+          }
+        ]
       }
     ]
   }
 }
 
-// 高亮循环方法
-const startHighlightLoop = (chart: any) => {
-  if (!chart) return
+// 第一个仪表盘配置（运行时长）
+const gaugeOption1 = computed(() => createGaugeOption(345, 500))
 
-  // 如果已经存在定时器，先清除
-  if (highlightTimer) {
-    clearInterval(highlightTimer)
-    highlightTimer = null
-  }
-
-  highlightTimer = setInterval(() => {
-    // 取消之前的高亮
-    chart.dispatchAction({
-      type: 'downplay'
-    })
-    // 高亮当前柱子
-    chart.dispatchAction({
-      type: 'highlight',
-      seriesIndex: 0,
-      dataIndex: currentIndex
-    })
-    // 更新索引，循环
-    currentIndex = (currentIndex + 1) % VALUE.length
-  }, 1500)
-}
+// 第二个仪表盘配置（平均使用时长）
+const gaugeOption2 = computed(() => createGaugeOption(145, 200))
 
 onMounted(() => {
-  option.value = createEchartBar()
-})
-onUnmounted(() => {
-  if (highlightTimer) {
-    clearInterval(highlightTimer)
-  }
+  // 组件挂载后的逻辑
 })
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.gauge-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 5px 10px;
+
+  .gauge-item {
+    flex: 1;
+    height: 140px;
+    position: relative;
+
+    &:first-child {
+      margin-right: 16px;
+    }
+
+    .gauge-title {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 12px;
+      text-align: center;
+      white-space: nowrap;
+    }
+  }
+}
+</style>

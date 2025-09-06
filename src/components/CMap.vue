@@ -24,8 +24,8 @@ const mapOption = ref(getMapOption())
   justify-content: center;
   .map-content {
     position: relative;
-    width: 1920px;
-    height: 1080px;
+    width: 768px;
+    height: 1920px;
   }
 }
 </style>

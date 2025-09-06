@@ -1,14 +1,14 @@
 <!-- 顶部标题 -->
 <template>
-  <header class="header">山东省旅游指标监控平台</header>
+  <header class="header"></header>
   <!-- 文字轮播 -->
-  <div class="text-carousel">
+  <!-- <div class="text-carousel">
     <transition-group name="carousel" tag="div" class="carousel-container">
       <div class="text-carousel-item" :key="currentIndex" v-show="currentIndex === getCurrentItemIndex()">
         {{ getCurrentItem() }}
       </div>
     </transition-group>
-  </div>
+  </div> -->
 </template>
 
 <script setup lang="ts">
@@ -102,9 +102,9 @@ onBeforeUnmount(() => {
   position: absolute;
   margin: 0 12px;
   top: 12px;
-  width: calc(100% - 24px);
-  height: 87px;
-  background: url('@/assets/images/顶部标题.png') no-repeat center center;
+  width: 100%;
+  height: 77px;
+  background: url('@/assets/img/title.png') no-repeat center center;
   background-size: 100% 100%;
   display: flex;
   align-items: center;
