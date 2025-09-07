@@ -19,7 +19,7 @@ import { onMounted, ref } from 'vue'
 import * as echarts from 'echarts'
 const chartRef = ref()
 
-const rankColors = ['#FD6B6A', '#FE831F', '#5CFCED'] // 1=红, 2=橙, 3=青
+const rankColors = ['#FD6B6A', '#FE831F', '#FEFD29'] // 1=红, 2=橙, 3=青
 
 const option = ref({
   grid: {
