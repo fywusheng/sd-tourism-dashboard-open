@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AgeDistribution: typeof import('./src/components/leftPanel/ageDistribution.vue')['default']
+    ApiExample: typeof import('./src/components/examples/ApiExample.vue')['default']
     CEcharts: typeof import('./src/components/common/CEcharts.vue')['default']
     CFooter: typeof import('./src/components/CFooter.vue')['default']
     CHeader: typeof import('./src/components/CHeader.vue')['default']
@@ -21,12 +22,14 @@ declare module 'vue' {
     MiddleCardRightBottom: typeof import('./src/components/MiddleCardRightBottom.vue')['default']
     MiddleCardRightTop: typeof import('./src/components/MiddleCardRightTop.vue')['default']
     MiddleCont: typeof import('./src/components/MiddleCont.vue')['default']
+    ProxyTest: typeof import('./src/components/examples/ProxyTest.vue')['default']
     RankingOfScenicSpots: typeof import('./src/components/leftPanel/rankingOfScenicSpots.vue')['default']
     RealTimeHotWords: typeof import('./src/components/rightPanel/realTimeHotWords.vue')['default']
     ReceptionOfTourists: typeof import('./src/components/leftPanel/receptionOfTourists.vue')['default']
     ReviewList: typeof import('./src/components/common/ReviewList.vue')['default']
     RightPanel: typeof import('./src/components/rightPanel.vue')['default']
     SaleList: typeof import('./src/components/common/SaleList.vue')['default']
+    TitleDemo: typeof import('./src/components/examples/TitleDemo.vue')['default']
     Top5Tourists: typeof import('./src/components/rightPanel/top5Tourists.vue')['default']
     VanCircle: typeof import('vant/es')['Circle']
   }
