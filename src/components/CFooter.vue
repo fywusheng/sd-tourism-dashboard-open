@@ -7,15 +7,14 @@
         <div class="card-title">{{ item.title }}</div>
         <div class="card-value">{{ item.value }}</div>
       </div>
-      <div class="text-desc">此处为所展示地理位置简要文字性介绍</div>
+      <div class="text-desc">此地图为今日飞鸽电动自行车在全国各省范围内的行驶用户数据分布图</div>
     </div>
 
     <!-- 底部说明区域 -->
     <div class="footer-info">
-      <!-- <div class="main-text">此处为所展示地理位置简要文字性介绍</div> -->
       <div class="sub-text">
         <span class="copyright">版权所有：飞鸽公司</span>
-        <span class="tech-support">技术支持：xxx技术有限公司</span>
+        <span class="tech-support">技术支持：天津德裕供应链管理服务有限公司</span>
       </div>
     </div>
   </footer>

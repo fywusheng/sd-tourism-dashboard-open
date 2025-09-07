@@ -52,14 +52,8 @@ export const getMapOption = () => {
       layoutCenter: ['50%', `${i * 0.3 + 50}%`], //地图位置
       layoutSize: '100%',
       itemStyle: {
-        normal: {
-          areaColor: colorList[i - 1],
-          borderWidth: 0
-        },
-        emphasis: {
-          areaColor: colorList[i - 1],
-          borderWidth: 0
-        }
+        areaColor: colorList[i - 1],
+        borderWidth: 0
       },
       label: {
           show: false,
@@ -68,8 +62,8 @@ export const getMapOption = () => {
         }
     }
     if (i === colorList.length) {
-      mapOption.itemStyle.normal.shadowColor = 'rgba(0, 0, 0, 0.71)'
-      mapOption.itemStyle.normal.shadowBlur = 100
+      mapOption.itemStyle.shadowColor = 'rgba(0, 0, 0, 0.71)'
+      mapOption.itemStyle.shadowBlur = 100
     }
     geoList.push(mapOption)
   }
@@ -267,7 +261,7 @@ export const getMapOption = () => {
   { name: "合肥", geoCoord: [117.27, 31.86] },
   { name: "武汉", geoCoord: [114.31, 30.52] },
   { name: "大庆", geoCoord: [125.03, 46.58] },
-];
+  ];
   const option = {
     legend: {
       show: true,
@@ -295,17 +289,11 @@ export const getMapOption = () => {
           disabled: true
         },
         itemStyle: {
-          normal: {
-            // borderColor: 'rgb(180, 137, 81)',
-            borderColor: '#5dffee',
-            borderWidth: 8,
-            // shadowColor: 'rgba(218, 163, 88, 0.4)',
-            // shadowBlur: 20
-          },
-          emphasis: {
-            borderColor: '#5dffee',
-            borderWidth: 8
-          }
+          // borderColor: 'rgb(180, 137, 81)',
+          borderColor: '#5dffee',
+          borderWidth: 8,
+          // shadowColor: 'rgba(218, 163, 88, 0.4)',
+          // shadowBlur: 20
         },
         label: {
           show: false,
@@ -324,22 +312,14 @@ export const getMapOption = () => {
           disabled: true
         },
         itemStyle: {
-          normal: {
-            // areaColor: 'rgba(106, 125, 171, 0.45)',
-            // areaColor: '#5dffee',
-            // borderWidth: 0
-             areaColor: {
-              image: mapBg
-            },
-            // areaColor: '#0141a0',
-            borderColor: '#5dffee',
+          // areaColor: 'rgba(106, 125, 171, 0.45)',
+          // areaColor: '#5dffee',
+          // borderWidth: 0
+           areaColor: {
+            image: mapBg
           },
-          emphasis: {
-            areaColor: {
-              image: mapBg
-            },
-            borderColor: '#5dffee',
-          }
+          // areaColor: '#0141a0',
+          borderColor: '#5dffee',
         },
         label: {
           show: false,
@@ -358,21 +338,12 @@ export const getMapOption = () => {
           disabled: true
         },
         itemStyle: {
-          normal: {
-            areaColor: {
-              image: mapBg
-            },
-            // areaColor: '#0141a0',
-            borderColor: '#5dffee',
-            borderWidth: 1
+          areaColor: {
+            image: mapBg
           },
-          emphasis: {
-            areaColor: {
-              image: mapBg
-            },
-            borderColor: '#5dffee',
-            borderWidth: 1
-          }
+          // areaColor: '#0141a0',
+          borderColor: '#5dffee',
+          borderWidth: 1
         },
         label: {
           show: false,
@@ -402,7 +373,7 @@ export const getMapOption = () => {
         },
         data: (() => {
           const data = [];
-          const len = 50;
+          const len = 500;
           let geoCoord;
           for (let i = 0; i < len; i++) {
             geoCoord = placeList[i % placeList.length].geoCoord;
@@ -428,6 +399,7 @@ export const getMapOption = () => {
         geoIndex: 2,
         zlevel: 3,
         symbolSize: 4,
+        // symbolSize: 25,
         large: true,
         effectType: "ripple",
         rippleEffect: {
@@ -439,7 +411,7 @@ export const getMapOption = () => {
         },
         data: (() => {
           const data = [];
-          const len = 10;
+          const len = 100;
           let geoCoord;
           for (let i = 0; i < len; i++) {
             geoCoord = placeList[i % placeList.length].geoCoord;
@@ -491,7 +463,6 @@ export const getMapOption = () => {
   }
   return option
 }
-
 // 生成地图数据柱数据
 const getLineData = () => {
   const districtData: {
@@ -643,22 +614,18 @@ const getLineData = () => {
         brushType: 'stroke'
       },
       label: {
-        normal: {
-          formatter: '{b}',
-          position: 'bottom',
-          show: false,
-          color: '#fff',
-          distance: 10
-        }
+        formatter: '{b}',
+        position: 'bottom',
+        show: false,
+        color: '#fff',
+        distance: 10
       },
       symbol: 'circle',
       symbolSize: [20, 10],
       itemStyle: {
-        normal: {
-          color: 'rgba(232, 204, 149, 1)',
-          shadowBlur: 10,
-          shadowColor: 'rgba(232, 204, 149, 1)'
-        },
+        color: 'rgba(232, 204, 149, 1)',
+        shadowBlur: 10,
+        shadowColor: 'rgba(232, 204, 149, 1)',
         opacity: 1
       },
       zlevel: 4
@@ -670,31 +637,26 @@ const getLineData = () => {
       geoIndex: 0,
       zlevel: 5,
       label: {
-        normal: {
-          show: true,
-          formatter: function (params: any) {
-            return `{cityName|${params.name}}\n {value|${params.data.data}} {unit|万人}`
-          },
-          rich: {
-            cityName: {
-              color: 'rgba(201, 211, 234, 1)',
-              fontSize: 14,
-              padding: [6, 0, 4, 48]
-            },
-            value: {
-              color: 'rgba(255, 187, 94, 1)',
-              fontSize: 18,
-              fontWeight: 800,
-              padding: [0, 0, 0, 44]
-            },
-            unit: {
-              color: 'rgba(255, 187, 94, 1)',
-              fontSize: 14
-            }
-          }
+        show: true,
+        formatter: function (params: any) {
+          return `{cityName|${params.name}}\n {value|${params.data.data}} {unit|万人}`
         },
-        emphasis: {
-          show: true
+        rich: {
+          cityName: {
+            color: 'rgba(201, 211, 234, 1)',
+            fontSize: 14,
+            padding: [6, 0, 4, 48]
+          },
+          value: {
+            color: 'rgba(255, 187, 94, 1)',
+            fontSize: 18,
+            fontWeight: 800,
+            padding: [0, 0, 0, 44]
+          },
+          unit: {
+            color: 'rgba(255, 187, 94, 1)',
+            fontSize: 14
+          }
         }
       },
       symbol: `image://` + lineTopList[index],

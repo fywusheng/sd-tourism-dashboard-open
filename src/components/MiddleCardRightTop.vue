@@ -6,8 +6,8 @@
       <div class="subtitle">今日行驶用户</div>
     </div>
     <van-circle
-      v-model:current-rate="props.rate"
-      :rate="100"
+      v-model:current-rate="currentRate"
+      :rate="rate"
       start-position="bottom"
       color="#5DFFEE"
       layer-color="#001D69"
@@ -16,7 +16,7 @@
       <template #default>
         <div class="rate-inner">
           <div>
-            <div class="rate-inner-title">80%</div>
+            <div class="rate-inner-title">{{ rate }}%</div>
             <div class="rate-inner-subTitle">用户总数</div>
           </div>
         </div>
@@ -26,12 +26,9 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-  rate: {
-    type: Number,
-    default: 75
-  }
-})
+import { ref } from 'vue'
+const rate = ref(75) // 这里可以根据需要调整百分比
+const currentRate = ref(0) // 当前进度
 </script>
 
 <style lang="scss" scoped>

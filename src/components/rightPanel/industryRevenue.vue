@@ -61,14 +61,14 @@ const createGaugeOption = (value: number, max: number = 100) => {
           lineStyle: {
             width: 6,
             color: [
-              [0.3, '#67e0e3'],
-              [0.7, '#37a2da'],
-              [1, '#fd666d']
+              [0.3, '#4CFF81'],
+              [0.7, '#5DFFED'],
+              [1, '#FD6A6B']
             ]
           }
         },
         axisTick: {
-          distance: -25,
+          distance: -20,
           splitNumber: 5,
           lineStyle: {
             width: 2,
@@ -84,7 +84,7 @@ const createGaugeOption = (value: number, max: number = 100) => {
           }
         },
         axisLabel: {
-          distance: -15,
+          distance: -20,
           color: '#67e0e3',
           fontSize: 10
         },
@@ -100,7 +100,7 @@ const createGaugeOption = (value: number, max: number = 100) => {
           lineHeight: 30,
           borderRadius: 8,
           offsetCenter: [0, '25%'],
-          fontSize: 24,
+          fontSize: 20,
           fontWeight: 'bolder',
           formatter: '{value}',
           color: '#fff'
@@ -116,10 +116,10 @@ const createGaugeOption = (value: number, max: number = 100) => {
 }
 
 // 第一个仪表盘配置（运行时长）
-const gaugeOption1 = computed(() => createGaugeOption(345, 500))
+const gaugeOption1 = computed(() => createGaugeOption(10, 100))
 
 // 第二个仪表盘配置（平均使用时长）
-const gaugeOption2 = computed(() => createGaugeOption(145, 200))
+const gaugeOption2 = computed(() => createGaugeOption(75, 100))
 
 onMounted(() => {
   // 组件挂载后的逻辑

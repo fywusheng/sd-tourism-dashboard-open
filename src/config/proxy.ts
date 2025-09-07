@@ -9,7 +9,7 @@ interface ProxyConfig {
 export const devProxyConfig: ProxyConfig = {
   // 主 API 代理
   '/api': {
-    target: 'http://localhost:3000',
+    target: 'http://121.89.87.166',
     changeOrigin: true,
     rewrite: (path) => path.replace(/^\/api/, ''),
     configure: (proxy, options) => {

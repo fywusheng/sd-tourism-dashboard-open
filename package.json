@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
     "odometer": "^0.4.8",
     "prettier": "^3.5.3",
     "sass": "^1.89.2",
+    "terser": "^5.44.0",
     "typescript-eslint": "^8.34.1",
     "vant": "^4.9.21",
     "vue": "^3.5.13",

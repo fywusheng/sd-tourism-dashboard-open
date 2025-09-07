@@ -21,10 +21,7 @@ import CEcharts from '@/components/common/CEcharts.vue'
 const option = ref<any>({})
 const chartRef = ref()
 let highlightTimer: any = null
-let currentIndex = 0
-const VALUE = [123, 100, 125, 100, 125]
 
-const barHeight = 50
 const data = [
   [5000, 10000, 6785.71],
   [4000, 10000, 6825],
@@ -130,23 +127,12 @@ const createEchartBar = () => {
         itemStyle: {
           color: '#67e0e3'
         }
-      },
-      {
-        type: 'bar',
-        itemStyle: {
-          color: 'transparent'
-        },
-        data: data.map(function (d) {
-          return d[2] - barHeight
-        }),
-        coordinateSystem: 'polar',
-        stack: 'Average',
-        silent: true,
-        z: 10
       }
     ]
   }
 }
+
+function startHighlightLoop() {}
 
 onMounted(() => {
   option.value = createEchartBar()

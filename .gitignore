@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+fly-large-screen
 *.local
 
 # Editor directories and files

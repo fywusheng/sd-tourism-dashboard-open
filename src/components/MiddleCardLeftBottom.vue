@@ -6,8 +6,8 @@
       <div class="subtitle">今日累计出行时长</div>
     </div>
     <van-circle
-      v-model:current-rate="props.rate"
-      :rate="100"
+      v-model:current-rate="currentRate"
+      :rate="rate"
       start-position="bottom"
       color="#5DFFEE"
       layer-color="#001D69"
@@ -26,12 +26,9 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-  rate: {
-    type: Number,
-    default: 75
-  }
-})
+import { ref } from 'vue'
+const currentRate = ref(0) // 当前进度
+const rate = ref(50) // 这里可以根据需要调整百分比
 </script>
 
 <style lang="scss" scoped>

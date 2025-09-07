@@ -15,12 +15,17 @@
 <script setup lang="ts">
 import CPanel from '@/components/common/CPanel.vue'
 import CEcharts from '@/components/common/CEcharts.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, inject } from 'vue'
 import * as echarts from 'echarts'
+
+// 使用 inject 函数注入数据
+// 第一个参数是提供的 key
+// 第二个参数 (可选) 是默认值
+const topTenData = inject('topTenData')
+console.log('Injected topTenData:', topTenData)
+
 const chartRef = ref()
-
 const rankColors = ['#FD6B6A', '#FE831F', '#FEFD29'] // 1=红, 2=橙, 3=青
-
 const option = ref({
   grid: {
     left: 125,

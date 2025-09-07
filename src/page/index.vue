@@ -30,8 +30,11 @@ import MiddleCardLeftTop from '@/components/MiddleCardLeftTop.vue'
 import MiddleCardLeftBottom from '@/components/MiddleCardLeftBottom.vue'
 import MiddleCardRightTop from '@/components/MiddleCardRightTop.vue'
 import MiddleCardRightBottom from '@/components/MiddleCardRightBottom.vue'
-import { onMounted } from 'vue'
+import { onMounted, provide, ref } from 'vue'
 import autofit from 'autofit.js'
+import http from '@/utils/http'
+const topTenData = ref([]) // 京东电动车销量TOP10
+provide('topTenData', topTenData)
 
 onMounted(() => {
   autofit.init({
@@ -40,7 +43,17 @@ onMounted(() => {
     dw: 1920, // 设计稿宽度
     resize: true
   })
+
+  getAnnualData()
 })
+
+// 获取年度统计数据
+async function getAnnualData() {
+  const res = await http.get('/api/device/dashboard/overview')
+  console.log('年度数据:', res)
+  // 京东电动车销量TOP10
+  topTenData.value = res.data.topTenData
+}
 </script>
 
 <style lang="scss" scoped>

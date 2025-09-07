@@ -37,7 +37,7 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       // 构建配置
-      outDir: 'dist',
+      outDir: 'fly-large-screen',
       sourcemap: false,
       minify: 'terser',
       rollupOptions: {

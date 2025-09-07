@@ -29,6 +29,7 @@ declare module 'vue' {
     ReviewList: typeof import('./src/components/common/ReviewList.vue')['default']
     RightPanel: typeof import('./src/components/rightPanel.vue')['default']
     SaleList: typeof import('./src/components/common/SaleList.vue')['default']
+    SaleListExample: typeof import('./src/components/examples/SaleListExample.vue')['default']
     TitleDemo: typeof import('./src/components/examples/TitleDemo.vue')['default']
     Top5Tourists: typeof import('./src/components/rightPanel/top5Tourists.vue')['default']
     VanCircle: typeof import('vant/es')['Circle']
