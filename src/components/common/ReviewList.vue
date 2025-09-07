@@ -77,7 +77,7 @@ const formatComment = (text: string) => {
 
 .comment {
   flex: 1;
-  color: #00eaff;
+  color: #5dffee;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
