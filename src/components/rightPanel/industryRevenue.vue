@@ -6,11 +6,11 @@
       <div class="gauge-container">
         <div class="gauge-item">
           <CEcharts ref="chartRef1" :option="gaugeOption1" />
-          <div class="gauge-title">运行时长 (h)</div>
+          <div class="gauge-title">运行时长 (min)</div>
         </div>
         <div class="gauge-item">
           <CEcharts ref="chartRef2" :option="gaugeOption2" />
-          <div class="gauge-title">平均使用时长 (h)</div>
+          <div class="gauge-title">平均使用时长 (min)</div>
         </div>
       </div>
     </template>
@@ -18,9 +18,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, inject } from 'vue'
 import CPanel from '@/components/common/CPanel.vue'
 import CEcharts from '@/components/common/CEcharts.vue'
+const rightPanelData: any = inject('rightPanelData', ref({}))
+
+const totalRunningDuration = computed(() => {
+  // const value = rightPanelData?.value?.totalRunningDuration || 345 // 默认值
+  const value = 768320 // 默认值
+  return value
+})
+const averageUsageDuration = computed(() => {
+  const value = rightPanelData?.value?.averageUsageDuration || 50 // 默认值
+  return value
+})
 
 const chartRef1 = ref()
 const chartRef2 = ref()
@@ -116,10 +127,10 @@ const createGaugeOption = (value: number, max: number = 100) => {
 }
 
 // 第一个仪表盘配置（运行时长）
-const gaugeOption1 = computed(() => createGaugeOption(10, 100))
+const gaugeOption1 = computed(() => createGaugeOption(totalRunningDuration.value, 100))
 
 // 第二个仪表盘配置（平均使用时长）
-const gaugeOption2 = computed(() => createGaugeOption(75, 100))
+const gaugeOption2 = computed(() => createGaugeOption(averageUsageDuration.value, 100))
 
 onMounted(() => {
   // 组件挂载后的逻辑

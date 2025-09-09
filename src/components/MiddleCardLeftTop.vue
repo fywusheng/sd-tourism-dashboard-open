@@ -2,7 +2,7 @@
   <div class="card-content">
     <!-- 在此处添加中间内容 -->
     <div class="card-left">
-      <div class="title">1234</div>
+      <div class="title">{{ corePanelData.currentOnlineVehicles ? corePanelData.currentOnlineVehicles : 11254 }}</div>
       <div class="subtitle">当前在线车辆</div>
     </div>
     <van-circle
@@ -16,7 +16,7 @@
       <template #default>
         <div class="rate-inner">
           <div>
-            <div class="rate-inner-title">80%</div>
+            <div class="rate-inner-title">{{ corePanelData.onlineRate ? corePanelData.onlineRate : 20.74 }}%</div>
             <div class="rate-inner-subTitle">车辆总数</div>
           </div>
         </div>
@@ -26,9 +26,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 const currentRate = ref(0) // 当前进度
-const rate = ref(50) // 这里可以根据需要调整百分比
+const corePanelData = inject('corePanelData') as any
+const rate = computed(() => {
+  return corePanelData.value.onlineRate || 20.74
+}) // 这里可以根据需要调整百分比
 </script>
 
 <style lang="scss" scoped>

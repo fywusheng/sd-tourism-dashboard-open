@@ -11,7 +11,7 @@ export const devProxyConfig: ProxyConfig = {
   '/api': {
     target: 'http://121.89.87.166',
     changeOrigin: true,
-    rewrite: (path) => path.replace(/^\/api/, ''),
+    rewrite: (path) => path.replace(/^\/api/, '/api'),
     configure: (proxy, options) => {
       proxy.on('proxyReq', (proxyReq, req) => {
         console.log('Proxy request:', req.method, req.url, '->', options.target + proxyReq.path)

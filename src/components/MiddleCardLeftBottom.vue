@@ -2,7 +2,7 @@
   <div class="card-content">
     <!-- 在此处添加中间内容 -->
     <div class="card-left">
-      <div class="title">1234</div>
+      <div class="title">10478</div>
       <div class="subtitle">今日累计出行时长</div>
     </div>
     <van-circle
@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 const currentRate = ref(0) // 当前进度
-const rate = ref(50) // 这里可以根据需要调整百分比
+const rate = ref(80) // 这里可以根据需要调整百分比
 </script>
 
 <style lang="scss" scoped>

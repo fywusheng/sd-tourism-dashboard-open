@@ -34,7 +34,17 @@ import { onMounted, provide, ref } from 'vue'
 import autofit from 'autofit.js'
 import http from '@/utils/http'
 const topTenData = ref([]) // 京东电动车销量TOP10
+const citySalesData = ref([]) // 本月各省销售数据
+const latestReviews = ref([]) // 用户评价
+
+const rightPanelData = ref({}) // 右侧数据面板数据
+const corePanelData = ref({}) // 核心数据面板数据
+
 provide('topTenData', topTenData)
+provide('citySalesData', citySalesData)
+provide('latestReviews', latestReviews)
+provide('rightPanelData', rightPanelData)
+provide('corePanelData', corePanelData)
 
 onMounted(() => {
   autofit.init({
@@ -44,15 +54,43 @@ onMounted(() => {
     resize: true
   })
 
-  getAnnualData()
+  // 五分钟刷新一次数据
+  setInterval(() => {
+    getPageData()
+  }, 300000) // 300000毫秒 = 5分钟
+
+  getPageData()
 })
+
+function getPageData() {
+  getAnnualData()
+  getRightPanelData()
+  getCorePanelData()
+}
 
 // 获取年度统计数据
 async function getAnnualData() {
-  const res = await http.get('/api/device/dashboard/overview')
-  console.log('年度数据:', res)
+  const res = await http.get('/device/dashboard/overview')
   // 京东电动车销量TOP10
   topTenData.value = res.data.topTenData
+  // 本月各省销售数据
+  citySalesData.value = res.data.citySalesData
+  // 用户评价
+  latestReviews.value = res.data.latestReviews
+}
+
+// 获取右侧面板数据
+async function getRightPanelData() {
+  const res = await http.get('/device/low-carbon-dashboard/complete')
+  // 设置右侧面板数据
+  rightPanelData.value = res.data
+}
+
+// 获取右侧面板数据
+async function getCorePanelData() {
+  const res = await http.get('/device/low-carbon-dashboard/core-data')
+  // 设置核心面板数据
+  corePanelData.value = res.data
 }
 </script>
 

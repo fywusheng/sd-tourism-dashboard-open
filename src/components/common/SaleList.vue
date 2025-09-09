@@ -60,11 +60,25 @@ const topThree = computed(() => {
 // 图表配置 - 改为computed确保数据变化时重新计算
 const option = computed(() => ({
   grid: {
-    left: 60,
-    right: 80,
-    top: 10,
-    bottom: 10
+    left: 20, // 增加左边距给Y轴标签更多空间
+    right: 60,
+    top: 0,
+    bottom: 0,
+    containLabel: true // 确保标签在网格内
   },
+  dataZoom: [
+    {
+      type: 'inside',
+      show: true,
+      yAxisIndex: 0,
+      start: 0, // 从0开始显示
+      end: props.data.length > 8 ? Math.round(800 / props.data.length) : 100, // 动态计算显示比例，确保约8-10个项目可见
+      zoomLock: false,
+      moveOnMouseMove: true,
+      moveOnMouseWheel: true,
+      preventDefaultMouseMove: false
+    }
+  ],
   xAxis: {
     type: 'value',
     show: false,
@@ -78,10 +92,19 @@ const option = computed(() => ({
     axisTick: { show: false },
     axisLabel: {
       color: '#fff',
-      fontSize: 16,
-      fontWeight: 'bold',
-      margin: 15
-    }
+      fontSize: 10, // 减小字体大小以适应更多标签
+      // fontWeight: 'bold',
+      margin: 8, // 减小边距
+      interval: 0, // 强制显示所有标签
+      overflow: 'none', // 不裁剪标签
+      width: 45, // 减小标签宽度
+      formatter: function (value: string) {
+        // 如果标签太长，可以在这里处理截断
+        return value.length > 3 ? value.substring(0, 3) + '..' : value
+      }
+    },
+    // 确保有足够空间显示所有标签
+    splitNumber: props.data.length
   },
   series: [
     {
@@ -115,8 +138,7 @@ const option = computed(() => ({
         show: true,
         position: 'right',
         color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
+        fontSize: 12,
         formatter: (params: any) => `${params.value}${props.unit}`,
         offset: [8, 0]
       }

@@ -45,6 +45,8 @@ const formatComment = (text: string) => {
   font-size: 12px;
   color: #fff;
   padding-bottom: 10px;
+  height: 106px;
+  overflow-y: auto;
 }
 
 .review-item {

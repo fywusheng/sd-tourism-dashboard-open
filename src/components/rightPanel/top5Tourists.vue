@@ -14,37 +14,83 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, inject, computed, watch } from 'vue'
 import CPanel from '@/components/common/CPanel.vue'
 import CEcharts from '@/components/common/CEcharts.vue'
 
 const option = ref<any>({})
 const chartRef = ref()
 let highlightTimer: any = null
+const rightPanelData: any = inject('rightPanelData', ref({}))
+// 省排行榜
+const provincialRanking = computed(() => {
+  // return rightPanelData?.value?.provincialRanking || []
+  // provincialRanking.value .push({
+  //   province: '陕西',
+  //   usageDuration: 1622494
+  // })
+  return [
+    { province: '陕西', usageDuration: 1622494 },
+    { province: '山东', usageDuration: 1221323 },
+    { province: '河北', usageDuration: 1102323 },
+    { province: '河南', usageDuration: 900000 },
+    { province: '广东', usageDuration: 850000 },
+    { province: '湖北', usageDuration: 800000 },
+    { province: '山西', usageDuration: 700000 },
+    { province: '江苏', usageDuration: 600000 },
+    { province: '辽宁', usageDuration: 500000 },
+    { province: '四川', usageDuration: 400000 },
+    { province: '浙江', usageDuration: 300000 },
+    { province: '湖南', usageDuration: 200000 }
+  ]
+})
+watch(provincialRanking, newVal => {
+  console.log('provincialRanking changed:', newVal)
+  option.value = createEchartBar()
+})
 
-const data = [
-  [5000, 10000, 6785.71],
-  [4000, 10000, 6825],
-  [3000, 6500, 4463.33],
-  [2500, 5600, 3793.83],
-  [2000, 4000, 3060],
-  [2000, 4000, 3222.33],
-  [2500, 4000, 3133.33],
-  [1800, 4000, 3100],
-  [2000, 3500, 2750],
-  [2000, 3000, 2500],
-  [1800, 3000, 2433.33],
-  [2000, 2700, 2375],
-  [1500, 2800, 2150],
-  [1500, 2300, 2100],
-  [1600, 3500, 2057.14],
-  [1500, 2600, 2037.5],
-  [1500, 2417.54, 1905.85],
-  [1500, 2000, 1775],
-  [1500, 1800, 1650]
-]
-// prettier-ignore
-const cities = ['北京', '上海', '深圳', '广州', '苏州', '杭州', '南京', '福州', '青岛', '济南', '长春', '大连', '温州', '郑州', '武汉', '成都', '东莞', '沈阳', '烟台']
+// 省份名称数组
+const cities = computed(() => {
+  const cities: any = []
+  provincialRanking.value.forEach((item: any) => {
+    cities.push(item.province)
+  })
+  return cities
+})
+
+const data = computed(() => {
+  let data: any = []
+  provincialRanking.value.forEach((item: any) => {
+    // let dataArray = [item.usageDuration / 2, item.usageDuration, item.usageDuration]
+    let dataArray = [0, item.usageDuration, item.usageDuration]
+    data.push(dataArray)
+  })
+  return data
+})
+
+// const data = [
+//   [5000, 10000, 6785.71]
+//   // [4000, 10000, 6825],
+//   // [3000, 6500, 4463.33],
+//   // [2500, 5600, 3793.83],
+//   // [2000, 4000, 3060],
+//   // [2000, 4000, 3222.33],
+//   // [2500, 4000, 3133.33],
+//   // [1800, 4000, 3100],
+//   // [2000, 3500, 2750],
+//   // [2000, 3000, 2500],
+//   // [1800, 3000, 2433.33],
+//   // [2000, 2700, 2375],
+//   // [1500, 2800, 2150],
+//   // [1500, 2300, 2100],
+//   // [1600, 3500, 2057.14],
+//   // [1500, 2600, 2037.5],
+//   // [1500, 2417.54, 1905.85],
+//   // [1500, 2000, 1775],
+//   // [1500, 1800, 1650]
+// ]
+// // prettier-ignore
+// const cities = ['北京']
 
 const createEchartBar = () => {
   return {
@@ -78,7 +124,15 @@ const createEchartBar = () => {
       show: true,
       formatter: function (params: any) {
         const id = params.dataIndex
-        return cities[id] + '<br>Lowest：' + data[id][0] + '<br>Highest：' + data[id][1] + '<br>Average：' + data[id][2]
+        return (
+          cities.value[id] +
+          '<br>最低：' +
+          data.value[id][0] +
+          '<br>平均：' +
+          data.value[id][1] +
+          '<br>最高：' +
+          data.value[id][2]
+        )
       }
     },
     radiusAxis: {
@@ -109,7 +163,7 @@ const createEchartBar = () => {
         itemStyle: {
           color: 'transparent'
         },
-        data: data.map(function (d) {
+        data: data.value.map(function (d: any) {
           return d[0]
         }),
         coordinateSystem: 'polar',
@@ -118,7 +172,7 @@ const createEchartBar = () => {
       },
       {
         type: 'bar',
-        data: data.map(function (d) {
+        data: data.value.map(function (d: any) {
           return d[1] - d[0]
         }),
         coordinateSystem: 'polar',
@@ -135,7 +189,10 @@ const createEchartBar = () => {
 function startHighlightLoop() {}
 
 onMounted(() => {
+  // setTimeout(() => {
+  // console.log('data', data.value, cities.value)
   option.value = createEchartBar()
+  // }, 1000)
 })
 onUnmounted(() => {
   if (highlightTimer) {

@@ -4,10 +4,10 @@
     <template #header>今日低碳出行TOP20</template>
     <template #content>
       <div class="ranking-list">
-        <div v-for="(item, index) in rankingData" :key="index" class="ranking-item" :class="{ 'top-three': index < 3 }">
+        <div v-for="(item, index) in todayTop20" :key="index" class="ranking-item" :class="{ 'top-three': index < 3 }">
           <div class="ranking-number">{{ String(index + 1).padStart(2, '0') }}</div>
           <div class="user-avatar">
-            <!-- <img :src="item.avatar" :alt="item.name" /> -->
+            <img :src="item.avatar" :alt="item.name" />
           </div>
           <div class="user-info">
             <span class="user-name">{{ item.name }}</span>
@@ -23,27 +23,42 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, inject, computed } from 'vue'
 import CPanel from '@/components/common/CPanel.vue'
+import Log from '@/assets/img/log1.png'
+import TouXiang from '@/assets/img/touxiang.png'
+const rightPanelData: any = inject('rightPanelData', ref({}))
 
-// 模拟头像数据 - 实际项目中应该使用真实的头像图片
-const avatars = [
-  'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiNGRjZEMDAiLz4KPHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSI+CjxjaXJjbGUgY3g9IjE2IiBjeT0iMTYiIHI9IjE2IiBmaWxsPSIjRkY2RDAwIi8+CjwvY2lyY2xlPgo8L3N2Zz4K',
-  'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiNGRkM4MDAiLz4KPHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSI+CjxjaXJjbGUgY3g9IjE2IiBjeT0iMTYiIHI9IjE2IiBmaWxsPSIjRkZDODAwIi8+CjwvY2lyY2xlPgo8L3N2Zz4K',
-  'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiNGRkVEMDAiLz4KPHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSI+CjxjaXJjbGUgY3g9IjE2IiBjeT0iMTYiIHI9IjE2IiBmaWxsPSIjRkZFRDAwIi8+CjwvY2lyY2xlPgo8L3N2Zz4K',
-  'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiM0RkI5RkYiLz4KPHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSI+CjxjaXJjbGUgY3g9IjE2IiBjeT0iMTYiIHI9IjE2IiBmaWxsPSIjNEZCOUZGIi8+CjwvY2lyY2xlPgo8L3N2Zz4K'
-]
+const comonPercentage = 100
+const todayTop20 = computed(() => {
+  if (!rightPanelData?.value?.todayTop20) {
+    return []
+  }
+  return (
+    rightPanelData?.value?.todayTop20.map((item: any) => ({
+      // ...item,
+      avatar: item.avatar || TouXiang,
+      name: item.userName,
+      duration: item.duration || 100,
+      // percentage: item.percentage || comonPercentage - 2
+      percentage: comonPercentage - 10
+    })) || []
+  )
+})
 
-const rankingData = ref([
-  { name: '省+娃氏', duration: 112, percentage: 100, avatar: avatars[0] },
-  { name: '山西-昊磊', duration: 110, percentage: 98, avatar: avatars[1] },
-  { name: '四川-白富美', duration: 100, percentage: 89, avatar: avatars[2] },
-  { name: '向阳花', duration: 90, percentage: 80, avatar: avatars[3] },
-  { name: '开心果', duration: 89, percentage: 79, avatar: avatars[0] },
-  { name: '独来独往', duration: 70, percentage: 63, avatar: avatars[1] },
-  { name: '齐天大圣', duration: 60, percentage: 54, avatar: avatars[2] },
-  { name: '江南首富', duration: 50, percentage: 45, avatar: avatars[3] }
-])
+// // 模拟头像数据 - 实际项目中应该使用真实的头像图片
+// const avatars = [TouXiang, Log]
+
+// const rankingData = ref([
+//   { name: '省+娃氏', duration: 112, percentage: 100, avatar: avatars[0] },
+//   { name: '山西-昊磊', duration: 110, percentage: 98, avatar: avatars[1] },
+//   { name: '四川-白富美', duration: 100, percentage: 89, avatar: avatars[0] },
+//   { name: '向阳花', duration: 90, percentage: 80, avatar: avatars[1] },
+//   { name: '开心果', duration: 89, percentage: 79, avatar: avatars[0] },
+//   { name: '独来独往', duration: 70, percentage: 63, avatar: avatars[1] },
+//   { name: '齐天大圣', duration: 60, percentage: 54, avatar: avatars[0] },
+//   { name: '江南首富', duration: 50, percentage: 45, avatar: avatars[1] }
+// ])
 </script>
 
 <style lang="scss" scoped>
@@ -81,30 +96,13 @@ const rankingData = ref([
   align-items: center;
   padding: 6px 8px;
   margin-bottom: 8px;
-  // background: linear-gradient(90deg, rgba(103, 224, 227, 0.1) 0%, rgba(103, 224, 227, 0.05) 100%);
   border-radius: 4px;
   transition: all 0.3s ease;
-
   &:hover {
     background: linear-gradient(90deg, rgba(103, 224, 227, 0.2) 0%, rgba(103, 224, 227, 0.1) 100%);
     transform: translateX(2px);
   }
-
-  // &.top-three {
-  //   background: linear-gradient(90deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 215, 0, 0.05) 100%);
-
-  //   &:hover {
-  //     background: linear-gradient(90deg, rgba(255, 215, 0, 0.25) 0%, rgba(255, 215, 0, 0.1) 100%);
-  //   }
-
-  //   .ranking-number {
-  //     color: #ffffff;
-  //     font-weight: bold;
-  //     font-size: 12px;
-  //   }
-  // }
 }
-
 .ranking-number {
   color: #67e0e3;
   font-size: 12px;
@@ -118,14 +116,12 @@ const rankingData = ref([
   width: 24px;
   height: 24px;
   margin-right: 12px;
-  background-color: #5cffec;
-
-  // img {
-  //   width: 100%;
-  //   height: 100%;
-  //   border-radius: 50%;
-  //   object-fit: cover;
-  // }
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
 }
 
 .user-info {

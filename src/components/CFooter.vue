@@ -13,7 +13,7 @@
     <!-- 底部说明区域 -->
     <div class="footer-info">
       <div class="sub-text">
-        <span class="copyright">版权所有：飞鸽公司</span>
+        <span class="copyright">版权所有：天津飞鸽车业有限公司</span>
         <span class="tech-support">技术支持：天津德裕供应链管理服务有限公司</span>
       </div>
     </div>
@@ -21,21 +21,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
+const corePanelData = inject('corePanelData') as any
 
 // 数据项配置
 const dataItems = ref([
   {
     title: '2025年总销量（万台）',
-    value: '456'
+    value: corePanelData.value.projected2025Sales || 5.4229
   },
   {
     title: '2025年总运行时长（万小时）',
-    value: '108.4'
+    value: corePanelData.value.projected2025Duration || 85.379
   },
   {
     title: '2025年总激活量（万台）',
-    value: '12345'
+    value: corePanelData.value.projected2025Activation || 3.6875
   }
 ])
 </script>

@@ -2,8 +2,8 @@
   <div class="card-content">
     <!-- 在此处添加中间内容 -->
     <div class="card-left">
-      <div class="title">1234</div>
-      <div class="subtitle">今日激活用户</div>
+      <div class="title">{{ corePanelData.todayActivatedUsers ? corePanelData.todayActivatedUsers : 47 }}</div>
+      <div class="subtitle">今日新增激活用户</div>
     </div>
     <van-circle
       v-model:current-rate="currentRate"
@@ -16,8 +16,10 @@
       <template #default>
         <div class="rate-inner">
           <div>
-            <div class="rate-inner-title">80%</div>
-            <div class="rate-inner-subTitle">用户总数</div>
+            <div class="rate-inner-title">
+              {{ corePanelData.todayActivatedRate ? corePanelData.todayActivatedRate : 63 }}%
+            </div>
+            <div class="rate-inner-subTitle">当日新增用户总数</div>
           </div>
         </div>
       </template>
@@ -26,9 +28,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 const currentRate = ref(0) // 当前进度
-const rate = ref(50) // 这里可以根据需要调整百分比
+const rate = ref(63) // 这里可以根据需要调整百分比
+// const rate = computed(() => {
+//   return corePanelData.value.todayActivatedRate || 63
+// }) // 这里可以根据需要调整百分比
+const corePanelData = inject('corePanelData') as any
 </script>
 
 <style lang="scss" scoped>
