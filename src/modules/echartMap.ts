@@ -289,9 +289,8 @@ export const getMapOption = (placeList: any[]) => {
           disabled: true
         },
         itemStyle: {
-          // borderColor: 'rgb(180, 137, 81)',
-          borderColor: '#5dffee',
-          borderWidth: 8,
+          borderColor: '#FEFD2A',
+          borderWidth: 2,
           // shadowColor: 'rgba(218, 163, 88, 0.4)',
           // shadowBlur: 20
         },
