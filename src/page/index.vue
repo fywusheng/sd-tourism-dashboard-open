@@ -1,4 +1,7 @@
 <template>
+  <transition name="fade">
+    <CLoading v-if="isLoading" />
+  </transition>
   <main class="container">
     <!-- 顶部标题 -->
     <CHeader />
@@ -20,6 +23,7 @@
 </template>
 
 <script setup lang="ts">
+import CLoading from '@/components/common/CLoading.vue'
 import CHeader from '@/components/CHeader.vue'
 import CMap from '@/components/CMap.vue'
 import LeftPanel from '@/components/leftPanel.vue'
@@ -33,6 +37,7 @@ import MiddleCardRightBottom from '@/components/MiddleCardRightBottom.vue'
 import { onMounted, provide, ref } from 'vue'
 import autofit from 'autofit.js'
 import http from '@/utils/http'
+const isLoading = ref(true)
 const topTenData = ref([]) // 京东电动车销量TOP10
 const citySalesData = ref([]) // 本月各省销售数据
 const latestReviews = ref([]) // 用户评价
@@ -54,18 +59,27 @@ onMounted(() => {
     resize: true
   })
 
+  // 首次加载
+  getPageData()
+
   // 五分钟刷新一次数据
   setInterval(() => {
-    getPageData()
+    // 后续刷新，不再显示 loading
+    getAnnualData()
+    getRightPanelData()
+    getCorePanelData()
   }, 300000) // 300000毫秒 = 5分钟
-
-  getPageData()
 })
 
-function getPageData() {
-  getAnnualData()
-  getRightPanelData()
-  getCorePanelData()
+async function getPageData() {
+  isLoading.value = true
+  try {
+    await Promise.all([getAnnualData(), getRightPanelData(), getCorePanelData()])
+  } catch (error) {
+    console.error('获取页面数据失败:', error)
+  } finally {
+    isLoading.value = false
+  }
 }
 
 // 获取年度统计数据
@@ -101,5 +115,13 @@ async function getCorePanelData() {
   height: 100%;
   background: url('@/assets/img/bg.png') no-repeat center center;
   background-size: 100% 100%;
+}
+/* 过渡动画 */
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

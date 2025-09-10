@@ -13,6 +13,7 @@ declare module 'vue' {
     CEcharts: typeof import('./src/components/common/CEcharts.vue')['default']
     CFooter: typeof import('./src/components/CFooter.vue')['default']
     CHeader: typeof import('./src/components/CHeader.vue')['default']
+    CLoading: typeof import('./src/components/common/CLoading.vue')['default']
     CMap: typeof import('./src/components/CMap.vue')['default']
     CPanel: typeof import('./src/components/common/CPanel.vue')['default']
     IndustryRevenue: typeof import('./src/components/rightPanel/industryRevenue.vue')['default']
