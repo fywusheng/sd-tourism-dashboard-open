@@ -3,13 +3,23 @@
   <CPanel class="age-distribution" :height="178">
     <template #header>用户评价</template>
     <template #content>
-      <ReviewList :reviews="data" />
+      <vue3ScrollSeamless
+        :dataList="data"
+        class="list"
+        :class-option="{
+          limitMoveNum: data.length,
+          step: 0.5
+        }"
+      >
+        <ReviewList :reviews="data" />
+      </vue3ScrollSeamless>
     </template>
   </CPanel>
 </template>
 
 <script setup lang="ts">
 import { onMounted, inject, computed } from 'vue'
+import { vue3ScrollSeamless } from 'vue3-scroll-seamless'
 import CPanel from '@/components/common/CPanel.vue'
 import ReviewList from '@/components/common/ReviewList.vue'
 const latestReviews: any = inject('latestReviews')
@@ -35,4 +45,10 @@ const data = computed(() => {
 // ]
 onMounted(() => {})
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+// 样式：
+.list {
+  overflow: hidden;
+  height: 106px;
+}
+</style>

@@ -3,21 +3,35 @@
   <CPanel :height="283">
     <template #header>今日低碳出行TOP20</template>
     <template #content>
-      <div class="ranking-list">
-        <div v-for="(item, index) in todayTop20" :key="index" class="ranking-item" :class="{ 'top-three': index < 3 }">
-          <div class="ranking-number">{{ String(index + 1).padStart(2, '0') }}</div>
-          <div class="user-avatar">
-            <img :src="item.avatar" :alt="item.name" />
+      <vue3ScrollSeamless
+        :dataList="todayTop20"
+        class="list"
+        :class-option="{
+          limitMoveNum: todayTop20.length,
+          step: 0.5
+        }"
+      >
+        <div class="ranking-list">
+          <div
+            v-for="(item, index) in todayTop20"
+            :key="index"
+            class="ranking-item"
+            :class="{ 'top-three': index < 3 }"
+          >
+            <div class="ranking-number">{{ String(index + 1).padStart(2, '0') }}</div>
+            <div class="user-avatar">
+              <img :src="item.avatar" :alt="item.name" />
+            </div>
+            <div class="user-info">
+              <span class="user-name">{{ item.name }}</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" :style="{ width: item.percentage + '%' }"></div>
+            </div>
+            <div class="duration">{{ item.duration }} min</div>
           </div>
-          <div class="user-info">
-            <span class="user-name">{{ item.name }}</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill" :style="{ width: item.percentage + '%' }"></div>
-          </div>
-          <div class="duration">{{ item.duration }} min</div>
         </div>
-      </div>
+      </vue3ScrollSeamless>
     </template>
   </CPanel>
 </template>
@@ -25,7 +39,8 @@
 <script setup lang="ts">
 import { ref, inject, computed } from 'vue'
 import CPanel from '@/components/common/CPanel.vue'
-import Log from '@/assets/img/log1.png'
+// import Log from '@/assets/img/log1.png'
+import { vue3ScrollSeamless } from 'vue3-scroll-seamless'
 import TouXiang from '@/assets/img/touxiang.png'
 const rightPanelData: any = inject('rightPanelData', ref({}))
 
@@ -68,27 +83,17 @@ const todayTop20 = computed(() => {
   justify-content: space-between;
 }
 
+.list {
+  overflow: hidden;
+  height: 240px;
+  width: 100%;
+}
+
 .ranking-list {
   position: relative;
   width: 100%;
-  height: 240px;
-  overflow-y: auto;
-  padding: 8px 12px;
+  padding: 0px 12px;
   box-sizing: border-box;
-
-  // &::-webkit-scrollbar {
-  //   width: 4px;
-  // }
-
-  // &::-webkit-scrollbar-track {
-  //   background: rgba(255, 255, 255, 0.1);
-  //   border-radius: 2px;
-  // }
-
-  // &::-webkit-scrollbar-thumb {
-  //   background: rgba(103, 224, 227, 0.5);
-  //   border-radius: 2px;
-  // }
 }
 
 .ranking-item {
