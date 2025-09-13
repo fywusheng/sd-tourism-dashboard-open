@@ -231,7 +231,7 @@ const mapOption = ref(getMapOption(placeList.value))
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  //justify-content: center;
   display: flex;
   align-items: center;
   justify-content: center;

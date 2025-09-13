@@ -86,7 +86,7 @@ async function getPageData() {
 async function getAnnualData() {
   const res = await http.get('/device/dashboard/overview')
   // 京东电动车销量TOP10
-  topTenData.value = res.data.topTenData
+  topTenData.value = res.data.hotBrandData.items
   // 本月各省销售数据
   citySalesData.value = res.data.citySalesData
   // 用户评价
@@ -95,9 +95,13 @@ async function getAnnualData() {
 
 // 获取右侧面板数据
 async function getRightPanelData() {
-  const res = await http.get('/device/low-carbon-dashboard/complete')
-  // 设置右侧面板数据
-  rightPanelData.value = res.data
+  try {
+    const res = await http.get('/device/low-carbon-dashboard/complete')
+    // 设置右侧面板数据
+    rightPanelData.value = res.data
+  } catch (error) {
+    console.error('Failed to get right panel data:', error)
+  }
 }
 
 // 获取右侧面板数据

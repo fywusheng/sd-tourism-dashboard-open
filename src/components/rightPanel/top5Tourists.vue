@@ -22,28 +22,26 @@ const option = ref<any>({})
 const chartRef = ref()
 let highlightTimer: any = null
 const rightPanelData: any = inject('rightPanelData', ref({}))
-// 省排行榜
+
+// 省排行榜数据
 const provincialRanking = computed(() => {
-  // return rightPanelData?.value?.provincialRanking || []
-  // provincialRanking.value .push({
-  //   province: '陕西',
-  //   usageDuration: 1622494
-  // })
-  return [
-    { province: '陕西', usageDuration: 1622494 },
-    { province: '山东', usageDuration: 1221323 },
-    { province: '河北', usageDuration: 1102323 },
-    { province: '河南', usageDuration: 900000 },
-    { province: '广东', usageDuration: 850000 },
-    { province: '湖北', usageDuration: 800000 },
-    { province: '山西', usageDuration: 700000 },
-    { province: '江苏', usageDuration: 600000 },
-    { province: '辽宁', usageDuration: 500000 },
-    { province: '四川', usageDuration: 400000 },
-    { province: '浙江', usageDuration: 300000 },
-    { province: '湖南', usageDuration: 200000 }
-  ]
+  return rightPanelData?.value?.provincialRanking || []
+  // return [
+  //   { province: '陕西', usageDuration: 1622494 },
+  //   { province: '山东', usageDuration: 1221323 },
+  //   { province: '河北', usageDuration: 1102323 },
+  //   { province: '河南', usageDuration: 900000 },
+  //   { province: '广东', usageDuration: 850000 },
+  //   { province: '湖北', usageDuration: 800000 },
+  //   { province: '山西', usageDuration: 700000 },
+  //   { province: '江苏', usageDuration: 600000 },
+  //   { province: '辽宁', usageDuration: 500000 },
+  //   { province: '四川', usageDuration: 400000 },
+  //   { province: '浙江', usageDuration: 300000 },
+  //   { province: '湖南', usageDuration: 200000 }
+  // ]
 })
+// 监听数据变化
 watch(provincialRanking, newVal => {
   console.log('provincialRanking changed:', newVal)
   option.value = createEchartBar()
@@ -61,7 +59,6 @@ const cities = computed(() => {
 const data = computed(() => {
   let data: any = []
   provincialRanking.value.forEach((item: any) => {
-    // let dataArray = [item.usageDuration / 2, item.usageDuration, item.usageDuration]
     let dataArray = [0, item.usageDuration, item.usageDuration]
     data.push(dataArray)
   })

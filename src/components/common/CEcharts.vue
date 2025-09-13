@@ -27,7 +27,8 @@ watch(
 let echartsInstance: echarts.ECharts | null = null
 const echartsRef = ref()
 defineExpose({
-  setDataZoom
+  setDataZoom,
+  getChart: () => echartsInstance
 })
 const echartsResize = () => {
   console.log('resize')
@@ -44,6 +45,7 @@ onMounted(() => {
   if (echartsInstance) {
     if (state.option) {
       echartsInstance?.setOption(state.option)
+      emit('onload', echartsInstance)
     }
   } else {
     echartsInstance = echarts.init(echartsRef.value as HTMLDivElement)
@@ -52,6 +54,7 @@ onMounted(() => {
     })
     if (state.option) {
       echartsInstance?.setOption(state.option)
+      emit('onload', echartsInstance)
     }
   }
   window.addEventListener('resize', echartsResize)

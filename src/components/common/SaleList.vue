@@ -11,12 +11,13 @@
     <div class="chart-container">
       <CEcharts ref="chartRef" :option="option" @onload="startHighlightLoop" />
     </div>
+    <div class="chart-tips">未展示省份，本月销售数量为零</div>
   </div>
 </template>
 
 <script setup lang="ts">
 import CEcharts from '@/components/common/CEcharts.vue'
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, nextTick, onUnmounted, watch } from 'vue'
 
 interface SaleData {
   name: string
@@ -47,6 +48,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const chartRef = ref()
+let scrollTimer: any = null
+let highlightTimer: any = null
 
 // 计算前三名数据
 const topThree = computed(() => {
@@ -58,25 +61,21 @@ const topThree = computed(() => {
 })
 
 // 图表配置 - 改为computed确保数据变化时重新计算
-const option = computed(() => ({
+const option = ref({
   grid: {
     left: 20, // 增加左边距给Y轴标签更多空间
     right: 60,
-    top: 0,
+    top: 10,
     bottom: 0,
     containLabel: true // 确保标签在网格内
   },
   dataZoom: [
     {
-      type: 'inside',
-      show: true,
-      yAxisIndex: 0,
-      start: 0, // 从0开始显示
-      end: props.data.length > 8 ? Math.round(800 / props.data.length) : 100, // 动态计算显示比例，确保约8-10个项目可见
-      zoomLock: false,
-      moveOnMouseMove: true,
-      moveOnMouseWheel: true,
-      preventDefaultMouseMove: false
+      yAxisIndex: 0, // 对y轴进行缩放
+      show: false, // 不显示滑动条，只用于自动滚动
+      type: 'slider',
+      startValue: 0,
+      endValue: Math.min(4, props.data.length - 1) // 一次显示5个项目
     }
   ],
   xAxis: {
@@ -98,9 +97,15 @@ const option = computed(() => ({
       interval: 0, // 强制显示所有标签
       overflow: 'none', // 不裁剪标签
       width: 45, // 减小标签宽度
-      formatter: function (value: string) {
-        // 如果标签太长，可以在这里处理截断
-        return value.length > 3 ? value.substring(0, 3) + '..' : value
+      formatter: function (value: string, index: number) {
+        // 获取当前滚动区间的起始位置
+        const startValue = option.value.dataZoom[0].startValue
+        // 计算在整个数据集中的实际排名
+        const actualRank = startValue + index + 1
+
+        // 显示排名和名称
+        const displayText = value.length > 3 ? value.substring(0, 3) + '..' : value
+        return `${actualRank}. ${displayText}`
       }
     },
     // 确保有足够空间显示所有标签
@@ -144,36 +149,62 @@ const option = computed(() => ({
       }
     }
   ]
-}))
+})
+
+// 自动滚动功能
+function startAutoScroll() {
+  // 清除之前的定时器
+  if (scrollTimer) {
+    clearInterval(scrollTimer)
+  }
+
+  // 如果数据少于等于5项，不需要滚动
+  if (props.data.length <= 5) {
+    return
+  }
+
+  scrollTimer = setInterval(() => {
+    const maxStartValue = props.data.length - 5 // 最大起始值 = 总数 - 显示数量
+    let newStartValue, newEndValue
+
+    // 检查是否已经滚动到最后一组
+    if (option.value.dataZoom[0].startValue >= maxStartValue) {
+      // 重置到开头
+      newEndValue = 4
+      newStartValue = 0
+    } else {
+      // 继续滚动
+      newEndValue = option.value.dataZoom[0].endValue + 1
+      newStartValue = option.value.dataZoom[0].startValue + 1
+    }
+
+    // 创建新的 option 对象
+    const newOption = {
+      ...option.value,
+      dataZoom: [
+        {
+          ...option.value.dataZoom[0],
+          startValue: newStartValue,
+          endValue: newEndValue
+        }
+      ]
+    }
+
+    // 更新 option
+    option.value = newOption
+
+    // 强制更新图表
+    if (chartRef.value && chartRef.value.getChart) {
+      const chart = chartRef.value.getChart()
+      if (chart) {
+        chart.setOption(option.value, true)
+      }
+    }
+  }, 2000)
+}
 
 // 高亮循环动画
-function startHighlightLoop(chart: any) {
-  if (!chart) return
-
-  // 延时确保图表已经完全渲染
-  setTimeout(() => {
-    // 强制resize确保图表正确显示
-    chart.resize()
-
-    let currentIndex = 0
-    const dataLength = props.data.length
-
-    setInterval(() => {
-      // 取消之前的高亮
-      chart.dispatchAction({
-        type: 'downplay'
-      })
-      // 高亮当前柱子
-      chart.dispatchAction({
-        type: 'highlight',
-        seriesIndex: 0,
-        dataIndex: currentIndex
-      })
-      // 更新索引，循环
-      currentIndex = (currentIndex + 1) % dataLength
-    }, 2000)
-  }, 100)
-}
+function startHighlightLoop(chart: any) {}
 
 onMounted(() => {
   // 确保DOM完全渲染后再处理图表
@@ -185,6 +216,77 @@ onMounted(() => {
       }
     }, 200)
   })
+
+  // 备用启动方式：如果图表回调没有触发，则在组件挂载后直接启动
+  setTimeout(() => {
+    if (!scrollTimer && props.data.length > 5) {
+      startAutoScroll()
+    }
+  }, 3000)
+})
+
+// 监听props.data的变化
+watch(
+  () => props.data,
+  newData => {
+    if (newData && newData.length > 0) {
+      // 创建新的 option 对象来避免代理错误
+      const newOption = {
+        ...option.value,
+        yAxis: {
+          ...option.value.yAxis,
+          data: newData.map(item => item.name)
+        },
+        series: [
+          {
+            ...option.value.series[0],
+            data: newData.map(item => item.value)
+          }
+        ],
+        dataZoom: [
+          {
+            ...option.value.dataZoom[0],
+            startValue: 0,
+            endValue: Math.min(4, newData.length - 1)
+          }
+        ]
+      }
+
+      // 更新 option
+      option.value = newOption
+
+      // 强制更新图表
+      if (chartRef.value && chartRef.value.getChart) {
+        const chart = chartRef.value.getChart()
+        if (chart) {
+          chart.setOption(option.value, true)
+          // 重新启动自动滚动
+          if (scrollTimer) {
+            clearInterval(scrollTimer)
+            scrollTimer = null
+          }
+          if (newData.length > 5) {
+            setTimeout(() => {
+              startAutoScroll()
+            }, 500)
+          }
+        }
+      }
+    }
+  },
+  { deep: true, immediate: true }
+)
+
+onUnmounted(() => {
+  // 组件销毁时清除定时器
+  if (scrollTimer) {
+    clearInterval(scrollTimer)
+    scrollTimer = null
+  }
+  if (highlightTimer) {
+    clearInterval(highlightTimer)
+    highlightTimer = null
+  }
 })
 </script>
 
@@ -236,8 +338,13 @@ onMounted(() => {
   }
 
   .chart-container {
-    height: v-bind('props.height + "px"');
+    height: 140px;
     width: 100%;
+  }
+  .chart-tips {
+    text-align: center;
+    font-size: 12px;
+    // margin-bottom: 10px;
   }
 }
 

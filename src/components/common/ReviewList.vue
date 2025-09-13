@@ -57,8 +57,13 @@ const formatComment = (text: string) => {
 
 .name {
   width: 74px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   text-align: right;
   flex-shrink: 0;
+  box-sizing: border-box;
+  padding-left: 15px;
 }
 
 .stars {

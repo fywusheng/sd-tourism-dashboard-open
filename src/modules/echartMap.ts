@@ -1,15 +1,31 @@
 import * as echarts from 'echarts'
-import sdData from '@/assets/data/中国.ts'
+import sdData from '@/assets/data/china'
+import nanhai from '@/assets/data/nanhai'
 import mapBg from '@/assets/images/map-bg.jpg'
-// import mapBg from '@/assets/images/mapBg.png'
 
 import lineTop1 from '@/assets/images/lineTop1.png'
 import lineTop2 from '@/assets/images/lineTop2.png'
 import lineTop3 from '@/assets/images/lineTop3.png'
 import lineTop4 from '@/assets/images/lineTop4.png'
 import lineTop5 from '@/assets/images/lineTop5.png'
-echarts.registerMap('sd', sdData as any)
+
 const lineTopList: any = [lineTop1, lineTop2, lineTop3, lineTop4, lineTop5]
+
+// 南沙诸岛以缩略图展示
+function formatJson(chinaGeoJson: any) {
+  chinaGeoJson.features.forEach((v: any) => {
+    if (v.properties && v.properties.name == '海南省') {
+      v.geometry.coordinates = v.geometry.coordinates.slice(0, 1)
+    }
+  })
+  // 过滤掉海南诸岛边界线
+  chinaGeoJson.features = chinaGeoJson.features.filter((item: any) => item.properties.adcode !== '100000_JD')
+  return chinaGeoJson
+}
+const sdDataFormat = formatJson(sdData as any)
+echarts.registerMap('china', sdDataFormat)
+echarts.registerMap('nanhai', nanhai as any)
+
 // 获取地图配置
 export const getMapOption = (placeList: any[]) => {
   // 渐变层颜色
@@ -43,7 +59,7 @@ export const getMapOption = (placeList: any[]) => {
   const geoList: any = []
   for (let i = 1; i <= colorList.length; i++) {
     const mapOption: any = {
-      map: 'sd',
+      map: 'china',
       aspectScale: 0.85,
       emphasis: {
         disabled: true
@@ -59,12 +75,25 @@ export const getMapOption = (placeList: any[]) => {
           show: false,
           color: '#fff',
           fontSize: 14
-        }
+      },
+      regions: [
+          {
+            name: '南海诸岛',
+            itemStyle: {
+              areaColor: 'transparent',
+              borderColor: 'transparent',
+              borderWidth: 1
+            },
+            label: {
+              show: false
+            }
+          }
+        ]
     }
-    if (i === colorList.length) {
-      mapOption.itemStyle.shadowColor = 'rgba(0, 0, 0, 0.71)'
-      mapOption.itemStyle.shadowBlur = 100
-    }
+    // if (i === colorList.length) {
+    //   mapOption.itemStyle.shadowColor = 'rgba(0, 0, 0, 0.71)'
+    //   mapOption.itemStyle.shadowBlur = 100
+    // }
     geoList.push(mapOption)
   }
   // 获取柱状图配置
@@ -279,30 +308,56 @@ export const getMapOption = (placeList: any[]) => {
     },
     geo: [
       // 最外围发光边界
-      {
-        map: 'sd',
-        aspectScale: 0.85,
-        layoutCenter: ['50%', '50%'], //地图位置
-        layoutSize: '100%',
-        z: 12,
-        emphasis: {
-          disabled: true
-        },
-        itemStyle: {
-          borderColor: '#FEFD2A',
-          borderWidth: 2,
-          // shadowColor: 'rgba(218, 163, 88, 0.4)',
-          // shadowBlur: 20
-        },
-        label: {
-          show: false,
-          color: '#fff',
-          fontSize: 14
-        }
-      },
+      // {
+      //   map: 'sd',
+      //   aspectScale: 0.85,
+      //   layoutCenter: ['50%', '50%'], //地图位置
+      //   layoutSize: '100%',
+      //   z: 12,
+      //   emphasis: {
+      //     disabled: true
+      //   },
+      //   itemStyle: {
+      //     borderColor: '#FEFD2A',
+      //     borderWidth: 1,
+      //     // shadowColor: 'rgba(218, 163, 88, 0.4)',
+      //     // shadowBlur: 20
+      //   },
+      //   label: {
+      //     show: false,
+      //     color: '#fff',
+      //     fontSize: 14
+      //   }
+      // },
       // 最外层遮罩蒙版
+      // {
+      //   map: 'sd',
+      //   aspectScale: 0.85,
+      //   layoutCenter: ['50%', '50%'], //地图位置
+      //   layoutSize: '100%',
+      //   z: 14,
+      //   emphasis: {
+      //     disabled: true
+      //   },
+      //   itemStyle: {
+      //     // areaColor: 'rgba(106, 125, 171, 0.45)',
+      //     // areaColor: '#5dffee',
+      //     // borderWidth: 0
+      //      areaColor: {
+      //       image: mapBg
+      //     },
+      //     // areaColor: '#0141a0',
+      //     borderColor: '#5dffee',
+      //   },
+      //   label: {
+      //     show: false,
+      //     color: '#fff',
+      //     fontSize: 14
+      //   }
+      // },
+      // 内部蓝色边界
       {
-        map: 'sd',
+        map: 'china',
         aspectScale: 0.85,
         layoutCenter: ['50%', '50%'], //地图位置
         layoutSize: '100%',
@@ -311,45 +366,25 @@ export const getMapOption = (placeList: any[]) => {
           disabled: true
         },
         itemStyle: {
-          // areaColor: 'rgba(106, 125, 171, 0.45)',
-          // areaColor: '#5dffee',
-          // borderWidth: 0
-           areaColor: {
-            image: mapBg
-          },
-          // areaColor: '#0141a0',
-          borderColor: '#5dffee',
-        },
-        label: {
-          show: false,
-          color: '#fff',
-          fontSize: 14
-        }
-      },
-      // 内部蓝色边界
-      {
-        map: 'sd',
-        aspectScale: 0.85,
-        layoutCenter: ['50%', '50%'], //地图位置
-        layoutSize: '100%',
-        z: 12,
-        emphasis: {
-          disabled: true
-        },
-        itemStyle: {
           areaColor: {
             image: mapBg
           },
           // areaColor: '#0141a0',
-          borderColor: '#5dffee',
-          borderWidth: 1
+          borderColor: 'white',
+          borderWidth: 1,
+          // shadowColor: 'rgba(214, 12, 12, 0.5)', // 阴影颜色
+          //       shadowBlur: 20, // 阴影模糊大小
+          //       shadowOffsetX: 5, // 阴影水平偏移
+          //       shadowOffsetY: 5 // 阴影垂直偏移
         },
         label: {
           show: false,
           color: '#fff',
           fontSize: 14
-        }
+        },
+        
       },
+      // 地图阴影
       ...geoList
     ],
     series: [
@@ -358,8 +393,8 @@ export const getMapOption = (placeList: any[]) => {
         name: "弱",
         type: "effectScatter",
         coordinateSystem: "geo",
-        geoIndex: 2,
-        zlevel: 3,
+        geoIndex: 0,
+        z: 15,
         symbolSize: 3*3,
         large: true,
         effectType: "ripple",
@@ -395,8 +430,8 @@ export const getMapOption = (placeList: any[]) => {
         name: "中",
         type: "effectScatter",
         coordinateSystem: "geo",
-        geoIndex: 2,
-        zlevel: 3,
+        geoIndex: 0,
+        z: 16,
         symbolSize: 4*3,
         // symbolSize: 25,
         large: true,
@@ -437,8 +472,8 @@ export const getMapOption = (placeList: any[]) => {
         name: "强",
         type: "effectScatter",
         coordinateSystem: "geo",
-        geoIndex: 2,
-        zlevel: 3,
+        geoIndex: 0,
+        z: 17,
         symbolSize: 5*3,
         large: true,
         effectType: "ripple",
