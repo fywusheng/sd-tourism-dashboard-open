@@ -21,22 +21,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue'
+import { inject, computed } from 'vue'
 const corePanelData = inject('corePanelData') as any
 
-// 数据项配置
-const dataItems = ref([
+// 数据项配置 - 改为computed响应式
+const dataItems = computed(() => [
   {
     title: '2025年总销量（万台）',
-    value: corePanelData.value.projected2025Sales || 5.4229
+    value: corePanelData?.value?.projected2025Sales || 0
   },
   {
     title: '2025年总运行时长（万小时）',
-    value: corePanelData.value.projected2025Duration || 85.379
+    value: corePanelData?.value?.projected2025Duration || 0
   },
   {
     title: '2025年总激活量（万台）',
-    value: corePanelData.value.projected2025Activation || 3.6875
+    value: corePanelData?.value?.projected2025Activation || 0
   }
 ])
 </script>

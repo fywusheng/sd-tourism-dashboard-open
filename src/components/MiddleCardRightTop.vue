@@ -2,7 +2,7 @@
   <div class="card-content">
     <!-- 在此处添加中间内容 -->
     <div class="card-left">
-      <div class="title">{{ corePanelData.todayRidingUsers ? corePanelData.todayRidingUsers : 33684 }}</div>
+      <div class="title">{{ corePanelData.todayRidingUsers }}</div>
       <div class="subtitle">今日行驶用户</div>
     </div>
     <van-circle
@@ -16,7 +16,7 @@
       <template #default>
         <div class="rate-inner">
           <div>
-            <div class="rate-inner-title">{{ corePanelData.ridingUserRate ? corePanelData.ridingUserRate : 62 }}%</div>
+            <div class="rate-inner-title">{{ corePanelData.ridingUserRate }}%</div>
             <div class="rate-inner-subTitle">用户总数</div>
           </div>
         </div>
@@ -27,11 +27,11 @@
 
 <script setup lang="ts">
 import { ref, inject, computed } from 'vue'
+const corePanelData = inject('corePanelData') as any
 const rate = computed(() => {
-  return corePanelData.value.ridingUserRate || 62
+  return corePanelData.value.ridingUserRate
 }) // 这里可以根据需要调整百分比
 const currentRate = ref(0) // 当前进度
-const corePanelData = inject('corePanelData') as any
 </script>
 
 <style lang="scss" scoped>

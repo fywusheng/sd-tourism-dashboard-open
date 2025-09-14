@@ -29,7 +29,7 @@
               <div class="progress-bar">
                 <div class="progress-fill" :style="{ width: item.percentage + '%' }"></div>
               </div>
-              <div class="duration">{{ item.duration }} min</div>
+              <div class="duration">{{ item.duration }}min</div>
             </div>
           </div>
         </vue3ScrollSeamless>

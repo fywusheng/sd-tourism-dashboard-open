@@ -97,7 +97,7 @@ export const getMapOption = (placeList: any[]) => {
     geoList.push(mapOption)
   }
   // 获取柱状图配置
-  const lineSeriesData = getLineData()
+  // const lineSeriesData = getLineData()
 
   // const placeList = [
   // { name: "海门", geoCoord: [121.15, 31.89] },
@@ -295,8 +295,8 @@ export const getMapOption = (placeList: any[]) => {
     legend: {
       show: true,
       orient: "vertical",
-      left: "30%",
-      bottom: "37%",
+      left: "40%",
+      bottom: "20%",
       data: ["弱", "中", "强"],
       textStyle: {
         color: "#fff",
@@ -304,7 +304,7 @@ export const getMapOption = (placeList: any[]) => {
       },
       itemWidth: 20,
       itemHeight: 14,
-      itemGap: 15
+      itemGap: 15,
     },
     geo: [
       // 最外围发光边界
@@ -388,7 +388,7 @@ export const getMapOption = (placeList: any[]) => {
       ...geoList
     ],
     series: [
-       // 保留大规模 markPoint 特效（弱）
+       // markPoint 特效（弱）
       {
         name: "弱",
         type: "effectScatter",
@@ -425,7 +425,7 @@ export const getMapOption = (placeList: any[]) => {
           return data;
         })(),
       },
-      // 保留大规模 markPoint 特效（中）
+      // markPoint 特效（中）
       {
         name: "中",
         type: "effectScatter",
@@ -467,7 +467,7 @@ export const getMapOption = (placeList: any[]) => {
           return data;
         })(),
       },
-      // 保留大规模 markPoint 特效（强）
+      // markPoint 特效（强）
       {
         name: "强",
         type: "effectScatter",
@@ -503,218 +503,218 @@ export const getMapOption = (placeList: any[]) => {
   return option
 }
 // 生成地图数据柱数据
-const getLineData = () => {
-  const districtData: {
-    name: string
-    value: number
-    point: number[]
-  }[] = [
-    {
-      name: '青岛市',
-      value: 267,
-      point: [120.150883, 36.451227]
-    },
-    {
-      name: '济南市',
-      value: 200,
-      point: [117.221211, 36.640013]
-    },
-    {
-      name: '临沂市',
-      value: 129,
-      point: [118.326443, 35.065282]
-    },
-    {
-      name: '潍坊市',
-      value: 107,
-      point: [119.107078, 36.70925]
-    },
-    {
-      name: '济宁市',
-      value: 86,
-      point: [116.740918, 35.371173]
-    }
-  ]
-  const lineSeriesData: any = []
-  const maxValue: number = Math.max(...districtData.map(item => item.value))
-  districtData.forEach((item: any, index: number) => {
-    // 柱子
-    const lineData = {
-      type: 'lines',
-      zlevel: 5,
-      effect: {
-        show: false,
-        symbolSize: 5
-      },
-      lineStyle: {
-        width: 10,
-        color: {
-          type: 'linear',
-          x: 1,
-          y: 0,
-          x2: 0,
-          y2: 0,
-          colorStops: [
-            {
-              offset: 0,
-              color: 'rgba(232, 204, 149, 1)'
-            },
-            {
-              offset: 1,
-              color: 'rgba(170, 144, 91, 1)'
-            }
-          ],
-          global: false
-        },
-        opacity: 1,
-        curveness: 0
-      },
-      label: {
-        show: 0,
-        position: 'end',
-        formatter: '245'
-      },
-      silent: true,
-      data: [
-        {
-          ...item,
-          coords: [item.point, [item.point[0], item.point[1] + item.value / maxValue]]
-        }
-      ]
-    }
-    // 柱子顶部
-    const lineTop: any = {
-      type: 'scatter',
-      coordinateSystem: 'geo',
-      geoIndex: 0,
-      zlevel: 5,
-      label: {
-        show: false
-      },
-      symbol: 'circle',
-      symbolSize: [10, 5],
-      itemStyle: {
-        color: 'rgba(255, 255, 179, 1)'
-      },
-      silent: true,
-      data: [
-        [item.point[0], item.point[1] + item.value / maxValue],
-        [item.point[0], item.point[1] + item.value / maxValue]
-      ]
-    }
-    // 柱子底部
-    const lineBottom: any = {
-      type: 'scatter',
-      coordinateSystem: 'geo',
-      geoIndex: 0,
-      zlevel: 4,
-      label: {
-        show: false
-      },
-      symbol: 'circle',
-      symbolSize: [10, 5],
-      itemStyle: {
-        color: {
-          type: 'linear',
-          x: 1,
-          y: 0,
-          x2: 0,
-          y2: 0,
-          colorStops: [
-            {
-              offset: 0,
-              color: 'rgba(232, 204, 149, 1)'
-            },
-            {
-              offset: 1,
-              color: 'rgba(170, 144, 91, 1)'
-            }
-          ],
-          global: false
-        }
-      },
-      silent: true,
-      data: [item.point]
-    }
-    // 底部光圈
-    const lineBottomCircle: any = {
-      name: 'Top 5',
-      type: 'effectScatter',
-      coordinateSystem: 'geo',
-      data: [
-        {
-          name: item['name'],
-          value: [item.point[0], item.point[1], item['value']]
-        }
-      ],
-      showEffectOn: 'render',
-      rippleEffect: {
-        scale: 5,
-        brushType: 'stroke'
-      },
-      label: {
-        formatter: '{b}',
-        position: 'bottom',
-        show: false,
-        color: '#fff',
-        distance: 10
-      },
-      symbol: 'circle',
-      symbolSize: [20, 10],
-      itemStyle: {
-        color: 'rgba(232, 204, 149, 1)',
-        shadowBlur: 10,
-        shadowColor: 'rgba(232, 204, 149, 1)',
-        opacity: 1
-      },
-      zlevel: 4
-    }
-    // 顶部图标
-    const lineTopIcon = {
-      type: 'scatter',
-      coordinateSystem: 'geo',
-      geoIndex: 0,
-      zlevel: 5,
-      label: {
-        show: true,
-        formatter: function (params: any) {
-          return `{cityName|${params.name}}\n {value|${params.data.data}} {unit|万人}`
-        },
-        rich: {
-          cityName: {
-            color: 'rgba(201, 211, 234, 1)',
-            fontSize: 14,
-            padding: [6, 0, 4, 48]
-          },
-          value: {
-            color: 'rgba(255, 187, 94, 1)',
-            fontSize: 18,
-            fontWeight: 800,
-            padding: [0, 0, 0, 44]
-          },
-          unit: {
-            color: 'rgba(255, 187, 94, 1)',
-            fontSize: 14
-          }
-        }
-      },
-      symbol: `image://` + lineTopList[index],
-      symbolSize: [143, 48],
-      symbolOffset: [0, 0],
-      z: 999,
-      data: [
-        {
-          name: item.name,
-          data: item.value,
-          value: [item.point[0], item.point[1] + item.value / maxValue + 0.2]
-        }
-      ]
-    }
-    lineSeriesData.push(lineData)
-    lineSeriesData.push(lineTop)
-    lineSeriesData.push(lineBottom)
-    lineSeriesData.push(lineBottomCircle)
-    lineSeriesData.push(lineTopIcon)
-  })
-  return lineSeriesData
-}
+// const getLineData = () => {
+//   const districtData: {
+//     name: string
+//     value: number
+//     point: number[]
+//   }[] = [
+//     {
+//       name: '青岛市',
+//       value: 267,
+//       point: [120.150883, 36.451227]
+//     },
+//     {
+//       name: '济南市',
+//       value: 200,
+//       point: [117.221211, 36.640013]
+//     },
+//     {
+//       name: '临沂市',
+//       value: 129,
+//       point: [118.326443, 35.065282]
+//     },
+//     {
+//       name: '潍坊市',
+//       value: 107,
+//       point: [119.107078, 36.70925]
+//     },
+//     {
+//       name: '济宁市',
+//       value: 86,
+//       point: [116.740918, 35.371173]
+//     }
+//   ]
+//   const lineSeriesData: any = []
+//   const maxValue: number = Math.max(...districtData.map(item => item.value))
+//   districtData.forEach((item: any, index: number) => {
+//     // 柱子
+//     const lineData = {
+//       type: 'lines',
+//       zlevel: 5,
+//       effect: {
+//         show: false,
+//         symbolSize: 5
+//       },
+//       lineStyle: {
+//         width: 10,
+//         color: {
+//           type: 'linear',
+//           x: 1,
+//           y: 0,
+//           x2: 0,
+//           y2: 0,
+//           colorStops: [
+//             {
+//               offset: 0,
+//               color: 'rgba(232, 204, 149, 1)'
+//             },
+//             {
+//               offset: 1,
+//               color: 'rgba(170, 144, 91, 1)'
+//             }
+//           ],
+//           global: false
+//         },
+//         opacity: 1,
+//         curveness: 0
+//       },
+//       label: {
+//         show: 0,
+//         position: 'end',
+//         formatter: '245'
+//       },
+//       silent: true,
+//       data: [
+//         {
+//           ...item,
+//           coords: [item.point, [item.point[0], item.point[1] + item.value / maxValue]]
+//         }
+//       ]
+//     }
+//     // 柱子顶部
+//     const lineTop: any = {
+//       type: 'scatter',
+//       coordinateSystem: 'geo',
+//       geoIndex: 0,
+//       zlevel: 5,
+//       label: {
+//         show: false
+//       },
+//       symbol: 'circle',
+//       symbolSize: [10, 5],
+//       itemStyle: {
+//         color: 'rgba(255, 255, 179, 1)'
+//       },
+//       silent: true,
+//       data: [
+//         [item.point[0], item.point[1] + item.value / maxValue],
+//         [item.point[0], item.point[1] + item.value / maxValue]
+//       ]
+//     }
+//     // 柱子底部
+//     const lineBottom: any = {
+//       type: 'scatter',
+//       coordinateSystem: 'geo',
+//       geoIndex: 0,
+//       zlevel: 4,
+//       label: {
+//         show: false
+//       },
+//       symbol: 'circle',
+//       symbolSize: [10, 5],
+//       itemStyle: {
+//         color: {
+//           type: 'linear',
+//           x: 1,
+//           y: 0,
+//           x2: 0,
+//           y2: 0,
+//           colorStops: [
+//             {
+//               offset: 0,
+//               color: 'rgba(232, 204, 149, 1)'
+//             },
+//             {
+//               offset: 1,
+//               color: 'rgba(170, 144, 91, 1)'
+//             }
+//           ],
+//           global: false
+//         }
+//       },
+//       silent: true,
+//       data: [item.point]
+//     }
+//     // 底部光圈
+//     const lineBottomCircle: any = {
+//       name: 'Top 5',
+//       type: 'effectScatter',
+//       coordinateSystem: 'geo',
+//       data: [
+//         {
+//           name: item['name'],
+//           value: [item.point[0], item.point[1], item['value']]
+//         }
+//       ],
+//       showEffectOn: 'render',
+//       rippleEffect: {
+//         scale: 5,
+//         brushType: 'stroke'
+//       },
+//       label: {
+//         formatter: '{b}',
+//         position: 'bottom',
+//         show: false,
+//         color: '#fff',
+//         distance: 10
+//       },
+//       symbol: 'circle',
+//       symbolSize: [20, 10],
+//       itemStyle: {
+//         color: 'rgba(232, 204, 149, 1)',
+//         shadowBlur: 10,
+//         shadowColor: 'rgba(232, 204, 149, 1)',
+//         opacity: 1
+//       },
+//       zlevel: 4
+//     }
+//     // 顶部图标
+//     const lineTopIcon = {
+//       type: 'scatter',
+//       coordinateSystem: 'geo',
+//       geoIndex: 0,
+//       zlevel: 5,
+//       label: {
+//         show: true,
+//         formatter: function (params: any) {
+//           return `{cityName|${params.name}}\n {value|${params.data.data}} {unit|万人}`
+//         },
+//         rich: {
+//           cityName: {
+//             color: 'rgba(201, 211, 234, 1)',
+//             fontSize: 14,
+//             padding: [6, 0, 4, 48]
+//           },
+//           value: {
+//             color: 'rgba(255, 187, 94, 1)',
+//             fontSize: 18,
+//             fontWeight: 800,
+//             padding: [0, 0, 0, 44]
+//           },
+//           unit: {
+//             color: 'rgba(255, 187, 94, 1)',
+//             fontSize: 14
+//           }
+//         }
+//       },
+//       symbol: `image://` + lineTopList[index],
+//       symbolSize: [143, 48],
+//       symbolOffset: [0, 0],
+//       z: 999,
+//       data: [
+//         {
+//           name: item.name,
+//           data: item.value,
+//           value: [item.point[0], item.point[1] + item.value / maxValue + 0.2]
+//         }
+//       ]
+//     }
+//     lineSeriesData.push(lineData)
+//     lineSeriesData.push(lineTop)
+//     lineSeriesData.push(lineBottom)
+//     lineSeriesData.push(lineBottomCircle)
+//     lineSeriesData.push(lineTopIcon)
+//   })
+//   return lineSeriesData
+// }

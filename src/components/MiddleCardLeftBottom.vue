@@ -2,7 +2,7 @@
   <div class="card-content">
     <!-- 在此处添加中间内容 -->
     <div class="card-left">
-      <div class="title">10478</div>
+      <div class="title">{{ corePanelData.todayTotalDuration }}</div>
       <div class="subtitle">今日累计出行时长</div>
     </div>
     <van-circle
@@ -16,8 +16,8 @@
       <template #default>
         <div class="rate-inner">
           <div>
-            <div class="rate-inner-title">80%</div>
-            <div class="rate-inner-subTitle">时长总数</div>
+            <div class="rate-inner-title">{{ corePanelData.durationRate }}%</div>
+            <div class="rate-inner-subTitle">日均时长</div>
           </div>
         </div>
       </template>
@@ -26,9 +26,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, inject, computed } from 'vue'
 const currentRate = ref(0) // 当前进度
-const rate = ref(80) // 这里可以根据需要调整百分比
+const corePanelData = inject('corePanelData') as any
+const rate = computed(() => {
+  return corePanelData.value.durationRate
+}) // 这里可以根据需要调整百分比
 </script>
 
 <style lang="scss" scoped>

@@ -14,6 +14,7 @@
     <!-- 底部组件 -->
     <CFooter />
     <!-- 中间内容区域 -->
+    <MiddleContTitle />
     <MiddleCont />
     <MiddleCardLeftTop />
     <MiddleCardLeftBottom />
@@ -29,6 +30,7 @@ import CMap from '@/components/CMap.vue'
 import LeftPanel from '@/components/leftPanel.vue'
 import RightPanel from '@/components/rightPanel.vue'
 import CFooter from '@/components/CFooter.vue'
+import MiddleContTitle from '@/components/MiddleContTitle.vue'
 import MiddleCont from '@/components/MiddleCont.vue'
 import MiddleCardLeftTop from '@/components/MiddleCardLeftTop.vue'
 import MiddleCardLeftBottom from '@/components/MiddleCardLeftBottom.vue'

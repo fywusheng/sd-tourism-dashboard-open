@@ -623,7 +623,7 @@ const rankColors = ['#FD6B6A', '#FE831F', '#FEFD29'] // 1=红, 2=橙, 3=青
 const option = ref({
   grid: {
     left: 230,
-    right: 60,
+    right: 40,
     top: 10,
     bottom: 10
   },
@@ -725,7 +725,7 @@ const option = ref({
         position: 'right',
         color: '#fff',
         fontSize: 12,
-        formatter: '{c}万台'
+        formatter: '{c}台'
       }
     }
   ]
