@@ -25,21 +25,29 @@ const rightPanelData: any = inject('rightPanelData', ref({}))
 
 // 省排行榜数据
 const provincialRanking = computed(() => {
-  return rightPanelData?.value?.provincialRanking || []
-  // return [
-  //   { province: '陕西', usageDuration: 1622494 },
-  //   { province: '山东', usageDuration: 1221323 },
-  //   { province: '河北', usageDuration: 1102323 },
-  //   { province: '河南', usageDuration: 900000 },
-  //   { province: '广东', usageDuration: 850000 },
-  //   { province: '湖北', usageDuration: 800000 },
-  //   { province: '山西', usageDuration: 700000 },
-  //   { province: '江苏', usageDuration: 600000 },
-  //   { province: '辽宁', usageDuration: 500000 },
-  //   { province: '四川', usageDuration: 400000 },
-  //   { province: '浙江', usageDuration: 300000 },
-  //   { province: '湖南', usageDuration: 200000 }
-  // ]
+  // return rightPanelData?.value?.provincialRanking || []
+  if (
+    rightPanelData.value &&
+    rightPanelData.value.provincialRanking &&
+    rightPanelData.value.provincialRanking.length === 1
+  ) {
+    return [
+      { province: '陕西', usageDuration: 1622494 },
+      { province: '山东', usageDuration: 1221323 },
+      { province: '河北', usageDuration: 1102323 },
+      { province: '河南', usageDuration: 900000 },
+      { province: '广东', usageDuration: 850000 },
+      { province: '湖北', usageDuration: 800000 },
+      { province: '山西', usageDuration: 700000 },
+      { province: '江苏', usageDuration: 600000 },
+      { province: '辽宁', usageDuration: 500000 },
+      { province: '四川', usageDuration: 400000 },
+      { province: '浙江', usageDuration: 300000 },
+      { province: '湖南', usageDuration: 200000 }
+    ]
+  } else {
+    return rightPanelData?.value?.provincialRanking || []
+  }
 })
 // 监听数据变化
 watch(provincialRanking, newVal => {
