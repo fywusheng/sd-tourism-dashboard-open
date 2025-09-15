@@ -3,7 +3,7 @@
     <!-- 在此处添加中间内容 -->
     <div class="card-left">
       <div class="title">{{ corePanelData.todayTotalDuration }}</div>
-      <div class="subtitle">今日累计出行时长</div>
+      <div class="subtitle">今日累计出行时长（h）</div>
     </div>
     <van-circle
       v-model:current-rate="currentRate"

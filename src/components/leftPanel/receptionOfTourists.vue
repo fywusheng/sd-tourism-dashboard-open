@@ -1,7 +1,7 @@
-<!-- 本月各省销售概况 -->
+<!-- 本日各省销售概况 -->
 <template>
   <CPanel :height="283">
-    <template #header>本月各省销售概况</template>
+    <template #header>今日各省销售概况</template>
     <template #content>
       <SaleList :data="customData" title="全国各省销售排行" unit="台" :height="180" />
     </template>

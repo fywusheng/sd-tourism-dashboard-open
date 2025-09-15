@@ -17,7 +17,7 @@
         <div class="rate-inner">
           <div>
             <div class="rate-inner-title">{{ corePanelData.activationRate }}%</div>
-            <div class="rate-inner-subTitle">日均激活</div>
+            <div class="rate-inner-subTitle">日激活率</div>
           </div>
         </div>
       </template>

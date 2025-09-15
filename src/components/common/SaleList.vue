@@ -11,7 +11,7 @@
     <div class="chart-container">
       <CEcharts ref="chartRef" :option="option" @onload="startHighlightLoop" />
     </div>
-    <div class="chart-tips">未展示省份，本月销售数量为零</div>
+    <div class="chart-tips">未展示省份，本日销售数量为零</div>
   </div>
 </template>
 

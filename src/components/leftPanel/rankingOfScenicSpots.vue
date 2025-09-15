@@ -622,7 +622,7 @@ const rankColors = ['#FD6B6A', '#FE831F', '#FEFD29'] // 1=红, 2=橙, 3=青
 // 图表配置
 const option = ref({
   grid: {
-    left: 230,
+    left: 80,
     right: 40,
     top: 10,
     bottom: 10

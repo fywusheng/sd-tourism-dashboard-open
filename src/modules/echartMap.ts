@@ -23,7 +23,7 @@ function formatJson(chinaGeoJson: any) {
   return chinaGeoJson
 }
 const sdDataFormat = formatJson(sdData as any)
-echarts.registerMap('china', sdDataFormat)
+echarts.registerMap('china', sdDataFormat as any)
 echarts.registerMap('nanhai', nanhai as any)
 
 // 获取地图配置
@@ -406,22 +406,16 @@ export const getMapOption = (placeList: any[]) => {
           color: "#2688F0",
         },
         data: (() => {
-          const data = [];
-          const len = 100;
-          let geoCoord;
-          for (let i = 0; i < len; i++) {
-            geoCoord = placeList[i % placeList.length].geoCoord;
-            data.push({
-              name: placeList[i % placeList.length].name + i,
-              // value: 10,
-              // ECharts 5.x effectScatter 只认 value: [lng, lat]
-              // 但可以加 name
-              value: [
-                geoCoord[0] + Math.random() * 5 - 2.5,
-                geoCoord[1] + Math.random() * 3 - 1.5,
-              ],
-            });
-          }
+          
+          const data:any = [];
+          placeList.forEach((item) => {
+            if(item.rank === 15) {
+              data.push({
+                name: item.name,
+                value: item.geoCoord
+              })
+            }
+          })
           return data;
         })(),
       },
@@ -445,25 +439,14 @@ export const getMapOption = (placeList: any[]) => {
         },
         data: (() => {
           const data:any = [];
-          // placeList.forEach((item) => {
-          //     data.push({
-          //       name: item.name,
-          //       value: item.geoCoord
-          //     })
-          // })
-          // return data;
-          const len = 300;
-          let geoCoord;
-          for (let i = 0; i < len; i++) {
-            geoCoord = placeList[i % placeList.length].geoCoord;
-            data.push({
-              name: placeList[i % placeList.length].name + i,
-              value: [
-                geoCoord[0] + Math.random() * 5 - 2.5,
-                geoCoord[1] + Math.random() * 3 - 1.5,
-              ],
-            });
-          }
+          placeList.forEach((item) => {
+            if(item.rank === 60) {
+              data.push({
+                name: item.name,
+                value: item.geoCoord
+              })
+            }
+          })
           return data;
         })(),
       },
@@ -485,14 +468,15 @@ export const getMapOption = (placeList: any[]) => {
           color: "#F6F6F6",
         },
         data: (function () {
-          var data = [];
-          var len = 15;
-          while (len--) {
-            data.push({
-              name: placeList[len].name,
-              value: placeList[len].geoCoord,
-            });
-          }
+          const data:any = [];
+          placeList.forEach((item) => {
+            if(item.rank === 25) {
+              data.push({
+                name: item.name,
+                value: item.geoCoord
+              })
+            }
+          })
           return data;
         })(),
       },
